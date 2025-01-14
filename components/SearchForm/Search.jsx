@@ -54,7 +54,7 @@ export function SearchForm({ data, config }) {
                                 onClick={itemClick}
                                 key={row.id}
                                 className={classes.autocomplete__item}
-                            >{row.productName}</li>
+                            >{row.name}</li>
                         })
                         :
                         null

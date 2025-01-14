@@ -18,7 +18,7 @@ function Thead({ config }) {
 
 function Tbody({ data, config }) {
     return <tbody>
-        {data.map(obj => <tr key={obj.id}>
+        {data.map(obj => <tr key={obj.id} data-id={obj.id}>
             {config.columns.map(({ title, content }) => <td key={title}>{content(obj)}</td>)}
         </tr>)}
     </tbody>
