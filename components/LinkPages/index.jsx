@@ -1,5 +1,5 @@
 import Link from "next/link";
-
+import { FaShoppingCart } from "react-icons/fa";
 
 const 
     pages = [
@@ -8,8 +8,7 @@ const
     ];
 
 export function PagesWebsite() {
-    return <header>
-    <nav>
+    return  <nav>
         <ul>
            {pages.map(({href, title})=>
            <li key={href}>
@@ -19,5 +18,4 @@ export function PagesWebsite() {
            </li>)}
         </ul>
     </nav>
-    </header>
 }

@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import classes from "./Search.module.css";
-import { ObjTable } from "../ObjTable";
+import { FaSearch } from "react-icons/fa";
+// import { ObjTable } from "../ObjTable";
 
 
 export function SearchForm({ data, config }) {
@@ -30,12 +31,14 @@ export function SearchForm({ data, config }) {
     console.debug('ObjTable render');
     return <>
         <form className={classes.search__form}>
+        <div className={classes.form}>
             <input
                 className={classes.search__input}
                 type="search" value={search}
                 onInput={event => setSearch(event.target.value)}
                 onClick={inputClick} />
-
+              <div className={classes.button__search}>{<FaSearch/>}</div>
+              </div>
             <ul className={classes.autocomplete}>
                 {
                     search && isOpen
@@ -62,6 +65,6 @@ export function SearchForm({ data, config }) {
 
             </ul>
         </form>
-        <ObjTable data={sortAndFilterData} config={config} />
+        {/* <ObjTable data={sortAndFilterData} config={config} /> */}
     </>
 }
