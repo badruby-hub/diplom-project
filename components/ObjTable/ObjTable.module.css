@@ -1,0 +1,20 @@
+.product__article{
+    border: 1px solid gray;
+    margin: 1em;
+    width: 300px;
+}
+
+
+.product__image{
+    width: 100%;
+}
+
+.product__details{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-inline: 1em ;
+    p{
+    margin: .3em;
+    }
+}

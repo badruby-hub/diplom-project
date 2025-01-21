@@ -1,15 +1,14 @@
-import { config } from "../configs/jsph"
+// import { config } from "../configs/jsph"
 import classes from "./Jsph.module.css";
 import useSWR from "swr";
 import toast from "react-hot-toast";
 import { ObjTable } from "../ObjTable";
-import { SearchForm } from "../SearchForm/Search";
-import { useState } from "react";
+import {  useState } from "react";
 
 
 const
   ADD = 'add',
-  API_URL = "http://localhost:3333/users",
+  API_URL = "http://localhost:3333/items",
   CART_URL = "http://localhost:3333/cart",
   fetcher = async () => {
     const res = await fetch(API_URL);
@@ -25,20 +24,13 @@ const
       error: (err) => `${err.toString()}`,
     });
     return await pr
-  },
-  columns = config.columns.concat(
-    { title: "", content: () => <button data-action={ADD}>add</button> }
-  )
-export function JSPHTable() {
+  }
+export function JSPHTable({search}) {
   const
     { data, error, isLoading, isValidating, mutate } = useSWR(API_URL, infofetcher, { revalidateOnFocus: false }),
-    [addItem, setAddItem] = useState(Array.from({length:config.columns.length},()=>'')),
+    [addItem, setAddItem] = useState(),
+     filteredData = data ? data.filter(item => item.title && item.title.includes(search)) : [],
     onClick = async event => {
-      const
-        action = event.target.closest('[data-action]')?.dataset?.action,
-        id = +event.target.closest('[data-id]')?.dataset?.id;
-      console.log(action, id);
-      console.log(addItem)
       if (!action) return;
       let
         optimisticData;
@@ -47,8 +39,8 @@ export function JSPHTable() {
           switch (action) {
             case ADD:
               const newObj = {};
-              config.columns.map(({setVal},i)=> setVal && Object.assign(newObj,setVal(addItem[i])));
               optimisticData = data.concat(newObj);
+              console.log("newObj",newObj);
               return fetch(API_URL,
                 {
                   method: 'POST',
@@ -83,11 +75,8 @@ export function JSPHTable() {
       {isValidating && '👁'}
       {error && `❌ ${error.toString()}`}
     </div>
-    <header>
-      {data && <SearchForm data={data} config={{ columns }} />}
-    </header>
     <main onClick={onClick} >
-      {data && <ObjTable data={data} config={{ columns }} />}
+      {filteredData  && <ObjTable data={filteredData} />}
     </main>
   </>
 }
