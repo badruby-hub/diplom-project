@@ -27,52 +27,29 @@ const
   };
 export function JSPHTable() {
   const
-    { data, error, isLoading, isValidating, mutate } = useSWR(API_URL, infofetcher, { revalidateOnFocus: false }),
-    [addItem, setAddItem] = useState(),
-    onClick = async event => {
-      const
-        action = event.target.closest('[data-action]')?.dataset?.action,
-        id = +event.target.closest('[data-id]')?.dataset?.id;
-      console.log("action and id", action, id);
-      console.log("addItem", addItem);
-      console.log("data", data);
-      if (!action) return;
-      let
-        optimisticData;
-      const
-        getPromise = () => {
-          switch (action) {
-            case ADD:
-              const newObj = {};
-              optimisticData = data.concat(newObj);
-              console.log("newObj", newObj);
-              return fetch(API_URL,
-                {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify(newObj)
-                }).then(res => {
-                  if (!res.ok) {
-                    throw new Error(res.status + " " + res.statusText);
-                  }
-                });
+    { data, error, isLoading, isValidating, mutate } = useSWR(API_URL, infofetcher, { revalidateOnFocus: false });
+    let optimisticData;
+    const AddPost = async (newObj) => {
+      if (data) {
+          optimisticData = data.concat(newObj);
+      } else {
+          optimisticData = [newObj];
+      }
+  
+      const response = await fetch(CART_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newObj)
+      });
+  
+      if (!response.ok) {
+          throw new Error(response.status + ' ' + response.statusText);
+      }
+      await mutate(fetcher, { optimisticData, revalidate: true });
+      toast.success('Дело добавлено');
+      console.log(newObj);
+  }
 
-
-          }
-        },
-        promise = getPromise();
-
-      if (promise) {
-        toast.promise(promise, {
-          loading: "Fetching" + action,
-          success: 'ok',
-          error: (err) => `${err.toString()}`,
-        });
-        await mutate(promise.then(optimisticData, fetcher), { optimisticData });
-      };
-    };
   return <>
     <div
       className={classes.loading}>
@@ -80,7 +57,7 @@ export function JSPHTable() {
       {isValidating && '👁'}
       {error && `❌ ${error.toString()}`}
     </div>
-    {data && <ObjTable data={data} />}
+    {data && <ObjTable data={data} addPost={AddPost} />}
 
   </>
 }

@@ -1,9 +1,7 @@
-// import { useMemo, useState } from "react";
-import { FiShoppingCart } from "react-icons/fi";
 import classes from "./ObjTable.module.css"
+import {AddForm} from "../Buttons/Buttons"
 
-
-export function ObjTable({ data }) {
+export function ObjTable({ data,addPost  }) {
     console.debug('ObjTable render', data);
     return <main className={classes.product__section}>
         {data.map(obj => <article className={classes.product__article} key={obj.id}>
@@ -14,9 +12,7 @@ export function ObjTable({ data }) {
                     <h2 alt={obj.title} className={classes.product__title}>{obj.title}</h2>
                 </figcaption>
             </figure>
-            <div className={classes.product__details}>
-                <button className={classes.add__to__cart__button}><FiShoppingCart className={classes.icon__cart}/>| Добавить в корзину</button>
-            </div>
+             <AddForm  addPost={() => addPost(obj)}/>
         </article>
 
         )}

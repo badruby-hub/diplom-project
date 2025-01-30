@@ -36,28 +36,3 @@
         margin-right: .3em;
     }
 }
-.product__details{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-
-    .add__to__cart__button{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 13rem;
-        height: 2rem;
-        color: white;
-        background-color:  rgb(176, 176, 176);
-        font-size: 1rem;
-        border-radius: 7px;
-        cursor: pointer;
-        .icon__cart{
-            margin-right: .3em;
-        }
-    }
-    .add__to__cart__button:active{
-    background: rgba(208, 207, 207, 0.679);
-    }
