@@ -1,9 +1,9 @@
-// import { config } from "../configs/jsph"
 import classes from "./Jsph.module.css";
 import useSWR from "swr";
 import toast from "react-hot-toast";
+import { useState } from "react";
 import { ObjTable } from "../ObjTable";
-import {  useState } from "react";
+
 
 
 const
@@ -24,13 +24,18 @@ const
       error: (err) => `${err.toString()}`,
     });
     return await pr
-  }
-export function JSPHTable({search}) {
+  };
+export function JSPHTable() {
   const
     { data, error, isLoading, isValidating, mutate } = useSWR(API_URL, infofetcher, { revalidateOnFocus: false }),
     [addItem, setAddItem] = useState(),
-     filteredData = data ? data.filter(item => item.title && item.title.includes(search)) : [],
     onClick = async event => {
+      const
+        action = event.target.closest('[data-action]')?.dataset?.action,
+        id = +event.target.closest('[data-id]')?.dataset?.id;
+      console.log("action and id", action, id);
+      console.log("addItem", addItem);
+      console.log("data", data);
       if (!action) return;
       let
         optimisticData;
@@ -40,7 +45,7 @@ export function JSPHTable({search}) {
             case ADD:
               const newObj = {};
               optimisticData = data.concat(newObj);
-              console.log("newObj",newObj);
+              console.log("newObj", newObj);
               return fetch(API_URL,
                 {
                   method: 'POST',
@@ -75,9 +80,8 @@ export function JSPHTable({search}) {
       {isValidating && '👁'}
       {error && `❌ ${error.toString()}`}
     </div>
-    <main onClick={onClick} >
-      {filteredData  && <ObjTable data={filteredData} />}
-    </main>
+    {data && <ObjTable data={data} />}
+
   </>
 }
 
