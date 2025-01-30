@@ -19,6 +19,10 @@
     .icon__cart{
         margin-right: .3em;
     }
+    .link_icon{
+        text-decoration: none;
+        color: black;
+    }
     .add__to__cart__button:active{
     background: rgba(208, 207, 207, 0.679);
     }

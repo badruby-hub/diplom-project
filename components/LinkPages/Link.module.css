@@ -15,11 +15,9 @@ margin: 1rem 5rem;
     align-items: center;
     flex-direction: column;
     color: black;
+     text-decoration: none;
+}
 
-}
-.link{
-    text-decoration: none;
-}
 .icon{
     font-size: 2rem;
     margin-bottom: .5rem;

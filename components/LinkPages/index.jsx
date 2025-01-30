@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FaShoppingCart, FaUserAlt, FaMapMarkerAlt, FaSearch, FaNeos, FaTimes } from "react-icons/fa";
+import { FaShoppingCart, FaUserAlt, FaMapMarkerAlt, FaNeos } from "react-icons/fa";
 import { SearchForm } from "../SearchForm/Search";
 import classes from "./Link.module.css"
 import useSWR from "swr";
@@ -9,7 +9,7 @@ const
     pages = [
         { href: '/address', title: <div className={classes.link_icon}><FaMapMarkerAlt className={classes.icon} /> Наш адрес</div> },
         { href: '/authorization', title: <div className={classes.link_icon}><FaUserAlt className={classes.icon} /> Войти</div> },
-        { href: '/shopping-cart', title: <div className={classes.link_icon}><FaShoppingCart className={classes.icon} /> Корзина</div> },
+        { href: '/cart', title: <div className={classes.link_icon}><FaShoppingCart className={classes.icon} /> Корзина</div> },
     ];
     const
     API_URL = "http://localhost:3333/items",

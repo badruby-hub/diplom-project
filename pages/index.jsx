@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { JSPHTable } from "../components/jsph/JSPH-table";
+import { JsphMain } from "../components/jsph/JSPH-table";
 
 
 
@@ -12,7 +12,7 @@ export default function Home() {
   <Head>
     <title>интернет-магазин:WILDBERRIS</title>
     </Head>
-     <JSPHTable/>
+     <JsphMain/>
  
     </> 
  }

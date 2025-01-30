@@ -27,7 +27,6 @@ export function SearchForm({ data }) {
     inputClick = () => {
         setIsOpen(true)
     };
-    console.debug('ObjTable render');
     return <>
         <form className={classes.search__form}>
             <input
