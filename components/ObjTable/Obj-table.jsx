@@ -9,7 +9,7 @@ export function TableMain({ data,addToCart,isInCart }) {
             <figure className={classes.figure}>
                 <img className={classes.product__image} src={obj.images} alt={obj.title} />
                 <figcaption className={classes.product__caption}>
-                    <p className={classes.product__price}><strong>Цена:</strong><span className={classes.product__value}>{obj.price}₽</span></p>
+                    <p className={classes.product__price}><strong className={classes.storng}>Цена:</strong><span className={classes.product__value}>{obj.price}₽</span></p>
                     <h2 alt={obj.title} className={classes.product__title}>{obj.title}</h2>
                 </figcaption>
             </figure>

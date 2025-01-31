@@ -2,7 +2,7 @@ import classes from "./Jsph.module.css";
 import useSWR from "swr";
 import toast from "react-hot-toast";
 import { TableMain,TableCart } from "../ObjTable/Obj-table";
-
+import {EmptyCart} from "../Error/index";
 const
   API_URL = "http://localhost:3333/items",
   CART_URL = "http://localhost:3333/cart",
@@ -17,7 +17,7 @@ const
     const pr = fetcher();
     toast.promise(pr, {
       loading: 'Загрузка',
-      success: 'Авто-обновление',
+      success: 'Авто-обновление1',
       error: (err) => `${err.toString()}`,
     });
     return await pr
@@ -25,13 +25,12 @@ const
 export function JsphMain() {
   const
     { data, error, isLoading, isValidating, mutate } = useSWR(API_URL, infofetcher, { revalidateOnFocus: false }),
-    { data : cartData } = useSWR(CART_URL, infofetcherCart, { revalidateOnFocus: false });
-    let optimisticData;
-    const isInCart = (id) => {
+    { data : cartData } = useSWR(CART_URL, fetcherCart, { revalidateOnFocus: false }),
+    isInCart = (id) => {
       return cartData && cartData.map(item => item.id).includes(id);
     };
- 
 
+    let optimisticData;
 
     const AddToCart = async (newObj) => {
       if (data) {
@@ -72,11 +71,11 @@ const
     return await res.json();
   },
   infofetcherCart = async () => {
-    console.log("infofetcherCart",);
+    console.log("infofetcherCart");
     const pr = fetcherCart();
     toast.promise(pr, {
       loading: 'Загрузка',
-      success: 'Авто-обновление',
+      success: 'Авто-обновление2',
       error: (err) => `${err.toString()}`,
     });
     return await pr
@@ -104,7 +103,12 @@ export function JsphCart() {
       {isValidating && '👁'}
       {error && `❌ ${error.toString()}`}
     </div>
-    {data && <TableCart data={data} delPost={DelPost} />}
+    {data && data.length > 0
+     ?
+     <TableCart data={data} delPost={DelPost} />
+     : 
+     <EmptyCart />
+    }
 
   </>
 }
