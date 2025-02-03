@@ -4,8 +4,8 @@ import toast from "react-hot-toast";
 import { TableMain,TableCart } from "../ObjTable/Obj-table";
 import {EmptyCart} from "../Error/index";
 const
-  API_URL = "http://localhost:3333/items",
-  CART_URL = "http://localhost:3333/cart",
+  API_URL = "api/product",
+  CART_URL = "api/cart",
 
   fetcher = async () => {
     const res = await fetch(API_URL);
@@ -63,7 +63,7 @@ export function JsphMain() {
   </>
 };
 
-
+// Cart 
 const
   fetcherCart = async () => {
     const res = await fetch(CART_URL);
@@ -93,7 +93,7 @@ export function JsphCart() {
       }
 
       await mutate(fetcherCart, { optimisticData, revalidate: true });
-      toast.success('Дело удалено');
+      toast.success('Товар удален');
   }
 
   return <>

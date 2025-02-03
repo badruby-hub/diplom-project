@@ -5,7 +5,7 @@ export function TableMain({ data,addToCart,isInCart }) {
     
     console.debug('ObjTable render main-data', data);
     return <main className={classes.product__section}>
-        {data.map(obj => <article className={classes.product__article} key={obj.id}>
+        {data.map(obj => <article className={classes.product__article} key={obj.id+Math.random()}>
             <figure className={classes.figure}>
                 <img className={classes.product__image} src={obj.images} alt={obj.title} />
                 <figcaption className={classes.product__caption}>
@@ -18,7 +18,6 @@ export function TableMain({ data,addToCart,isInCart }) {
         )}
     </main>
 }
-
 
 export function TableCart({ data,delPost  }) {
     
