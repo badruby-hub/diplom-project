@@ -20,10 +20,8 @@ export default async function products(req: NextApiRequest, res: NextApiResponse
       res.status(200).json(rows);
       break;
     case 'POST':
+      // await prisma.cart.create({ data: { text: req.body.text } });
       res.status(201).end();
-      break;
-    case 'DELETE':
-      res.status(201).json('');
       break;
     default:
       res.statusCode = 404;

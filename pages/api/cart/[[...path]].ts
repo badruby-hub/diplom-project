@@ -19,9 +19,6 @@ export default async function cart(req: NextApiRequest, res: NextApiResponse) {
       const rows = await prisma.cart.findMany();
       res.status(200).json(rows);
       break;
-    case 'POST':
-      res.status(201).end();
-      break;
     case 'DELETE':
       res.status(201).json('');
       break;

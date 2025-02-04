@@ -12,7 +12,7 @@ const
         { href: '/cart', title: <div className={classes.link_icon}><FaShoppingCart className={classes.icon} /> Корзина</div> },
     ];
     const
-    API_URL = "http://localhost:3333/items",
+    API_URL = "api/product",
     fetcher = async () => {
         const res = await fetch(API_URL);
         if (!res.ok) throw new Error("fetcher" + res.status);
