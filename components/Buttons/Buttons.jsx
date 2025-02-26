@@ -1,8 +1,15 @@
 import Link from "next/link";
 import classes from "./Button.module.css"
-import { FaShoppingCart ,FaRegTrashAlt } from "react-icons/fa";
+import { FaShoppingCart ,FaRegTrashAlt,FaSearch, FaTimes } from "react-icons/fa";
 
 
+export function BtnInSearch({clearForm, btnSearch}) {
+
+  return  <div className={classes.block_btn_search} >
+            {/* кнопка очистки */}<div className={classes.block_icon_search}>{<FaTimes className={classes.icon_search} onClick={clearForm}/>}</div>
+            {/* кнопка поиска  */}<div className={classes.block_icon_search}>{<FaSearch className={classes.icon_search} onClick={btnSearch}/>}</div>
+          </div>
+}
 
 
 export function AddForm({addToCart, selectCart}) {
@@ -19,15 +26,12 @@ export function AddForm({addToCart, selectCart}) {
     );
   }
 
+
   export function DelPost({delPost}) {
 
-    return (
-      <>
-           
+    return    <>
                 <button onClick={delPost} className={classes.del__cart__button}><FaRegTrashAlt/></button>
-          
       </>
-    );
   }
 
 

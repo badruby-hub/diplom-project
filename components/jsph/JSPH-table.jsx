@@ -2,7 +2,9 @@ import classes from "./Jsph.module.css";
 import useSWR from "swr";
 import toast from "react-hot-toast";
 import { TableMain,TableCart } from "../ObjTable/Obj-table";
-import {EmptyCart} from "../Error/index";
+import {EmptyCart, EmptyMain} from "../Error/index";
+import {useStore} from "@nanostores/react";
+import { $search  } from "@/store/search-product";
 const
   API_URL = "api/product",
   CART_URL = "api/cart",
@@ -24,8 +26,18 @@ const
   };
 export function JsphMain() {
   const
+    searchFilter = useStore($search),
     { data, error, isLoading, isValidating, mutate } = useSWR(API_URL, infofetcher, { revalidateOnFocus: false }),
     { data : cartData } = useSWR(CART_URL, fetcherCart, { revalidateOnFocus: false }),
+
+    filteredData = data ? data.filter(row=>{
+          if(!searchFilter.length) return true;
+          for (const key in row){
+            if(String(row[key]).toLowerCase().includes(searchFilter.toLowerCase())) return true ;
+          }
+          return false;
+    }): [],
+
     isInCart = (id) => {
       return cartData && cartData.map(item => item.id).includes(id);
     };
@@ -58,8 +70,11 @@ export function JsphMain() {
       {isValidating && '👁'}
       {error && `❌ ${error.toString()}`}
     </div>
-    {data && <TableMain data={data} addToCart={AddToCart} isInCart={isInCart} />}
-
+    {searchFilter.length > 0 && filteredData.length === 0 ?
+   <EmptyMain search={searchFilter} />
+    :
+   <TableMain data={filteredData} addToCart={AddToCart} isInCart={isInCart} />
+    }
   </>
 };
 

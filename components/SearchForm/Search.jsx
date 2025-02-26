@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import classes from "./Search.module.css";
-import { FaSearch, FaTimes } from "react-icons/fa";
+import {BtnInSearch} from "../Buttons/Buttons"
+import { $search } from "@/store/search-product";
 
 export function SearchForm({ data }) {
     console.log('SearchForm',data);
@@ -8,6 +9,7 @@ export function SearchForm({ data }) {
         [sort, setSort] = useState(null),
         [search, setSearch] = useState(''),
         [isOpen, setIsOpen] = useState(true),
+        [selectedIndex, setSelectedIndex] = useState(-1),
         sortAndFilterData = useMemo(() => {
             return data
                 .filter(row => {
@@ -20,10 +22,47 @@ export function SearchForm({ data }) {
                     return false;
                 });
         }, [data, sort, search]),
+
         itemClick = (event) => {
-            setSearch(event.target.textContent)
-            setIsOpen(!isOpen)
+            const textInValue = event.target.textContent;
+            setSearch(textInValue)
+            $search.set(textInValue);
+            setIsOpen(!isOpen);
         },
+        eventSearch = (event)=>{
+         if(event.key === 'Enter'){
+              event.preventDefault();
+            if(selectedIndex>=0){
+                const 
+                   selectedItem = sortAndFilterData[selectedIndex];
+                   setSearch(selectedItem.title);
+                   $search.set(selectedItem.title);
+            }
+              setIsOpen(!isOpen);
+         }
+
+         if(event.key === 'Backspace'){
+            setIsOpen(true);
+         }
+         if(event.key === 'ArrowDown'){
+            event.preventDefault();
+            setSelectedIndex(prevIndex => Math.min(prevIndex + 1, sortAndFilterData.length - 1 ));
+         }
+         if(event.key === 'ArrowUp'){
+            event.preventDefault();
+            setSelectedIndex(prevIndex => Math.max(prevIndex - 1, 0  ));
+         }
+        },
+        btnSearch=(event)=>{
+            event.preventDefault();
+            $search.set(search);
+            setIsOpen(!isOpen);
+        },
+    clearForm = ()=>{
+      $search.set('');
+      setSearch('');
+      setSelectedIndex(-1);
+    },
     inputClick = () => {
         setIsOpen(true)
     };
@@ -33,7 +72,10 @@ export function SearchForm({ data }) {
                 className={classes.search__input}
                 value={search}
                 onInput={event => setSearch(event.target.value)}
-                onClick={inputClick} />
+                onClick={inputClick}
+                onKeyDown={eventSearch}
+                />
+                
             <ul className={classes.autocomplete}>
                 {
                     search && isOpen
@@ -47,21 +89,20 @@ export function SearchForm({ data }) {
                             console.log(search)
                             return false;
                         })
-                        .map((row) => {
+                        .map((row, index) => {
                             return <li
                                 onClick={itemClick}
                                 key={row.title}
-                                className={classes.autocomplete__item}
+                                className={`${classes.autocomplete__item} ${selectedIndex === index ? classes.selected : ''}`}
                             >{row.title}</li>
                         })
                         :
                         null
                 }
             </ul>
-            <div className={classes.block_btn_search} >
-                    <div className={classes.block_icon_search}>{<FaTimes className={classes.icon_search} />}</div>
-                    <div className={classes.block_icon_search}>{<FaSearch className={classes.icon_search} />}</div>
-                </div>
+            {search.length > 0 ?(
+             <BtnInSearch btnSearch={btnSearch} clearForm={clearForm} />
+            ):null}
         </form>
     </>
 }

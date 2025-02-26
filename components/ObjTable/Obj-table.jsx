@@ -19,9 +19,14 @@ export function TableMain({ data,addToCart,isInCart }) {
         </article>
         )}
     </main>
+      
 }
 
 export function TableCart({ data,delPost  }) {
+
+    const 
+        countPrice = data.reduce((acc, obj)=>acc + obj.price, 0),
+        discount = Math.round(countPrice * 0.25);
     //переменная для счетчика считать общую сумму  ! 
     console.debug('ObjTable render cart-data', data);
     return <section className={classesCart.product__section}>
@@ -60,16 +65,16 @@ export function TableCart({ data,delPost  }) {
     <aside className={classesCart.cart__order__form}>
     <h2>К оплате</h2>
    <section className={classesCart.order__count__product}>
-   <p>товары, 1шт.</p>
-   <span>1400</span>
+   <p>товары: {data.length} шт.</p>
+   <span>{countPrice}</span>
    </section>
     <section className={classesCart.order__count__discount}>
     <p>моя скидка</p>
-    <span>802</span>
+    <span>-{discount}</span>
     </section>
     <section className={classesCart.order__total_amount}>
     <h2>Итого</h2>
-    <strong>802</strong>
+    <strong>{countPrice - discount}</strong>
     </section>
     <OrderBuy/>
     </aside>

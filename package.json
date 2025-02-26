@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.4",
+    "@nanostores/react": "^0.8.4",
     "@prisma/client": "^6.3.1",
     "json-server": "^1.0.0-beta.3",
+    "nanostores": "^0.11.4",
     "next": "15.1.4",
     "next-auth": "^4.24.11",
     "react": "^19.0.0",

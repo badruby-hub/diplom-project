@@ -56,3 +56,21 @@
         flex-grow: 1;
         max-height: 7vh;
     }
+
+
+    .block_btn_search{
+        display: flex;
+        align-items: center;
+   }
+
+   .block_icon_search{
+    padding: .5em; 
+}
+.icon_search{
+    font-size:x-large;
+    color: gray;
+}
+
+.icon_search:hover{
+    color: black;
+}
