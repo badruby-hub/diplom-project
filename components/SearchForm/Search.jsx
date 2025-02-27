@@ -32,13 +32,17 @@ export function SearchForm({ data }) {
         eventSearch = (event)=>{
          if(event.key === 'Enter'){
               event.preventDefault();
-            if(selectedIndex>=0){
+            if(selectedIndex >= 0 && selectedIndex < sortAndFilterData.length){
                 const 
                    selectedItem = sortAndFilterData[selectedIndex];
                    setSearch(selectedItem.title);
                    $search.set(selectedItem.title);
+            }else { 
+                $search.set(search);
             }
+            
               setIsOpen(!isOpen);
+              setSelectedIndex(-1);
          }
 
          if(event.key === 'Backspace'){
@@ -57,6 +61,7 @@ export function SearchForm({ data }) {
             event.preventDefault();
             $search.set(search);
             setIsOpen(!isOpen);
+            setSelectedIndex(-1);
         },
     clearForm = ()=>{
       $search.set('');
@@ -64,7 +69,8 @@ export function SearchForm({ data }) {
       setSelectedIndex(-1);
     },
     inputClick = () => {
-        setIsOpen(true)
+        setIsOpen(true);
+        setSelectedIndex(-1);
     };
     return <>
         <form className={classes.search__form}>
@@ -79,7 +85,7 @@ export function SearchForm({ data }) {
             <ul className={classes.autocomplete}>
                 {
                     search && isOpen
-                        ? sortAndFilterData
+                        ?  sortAndFilterData
                         .filter(row => {
                             if (!search.length) return true;
                             for (const key in row) {

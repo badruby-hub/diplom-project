@@ -1,5 +1,6 @@
 import Link from "next/link"
 import classes from "./Error.module.css"
+import { FaRegMeh } from "react-icons/fa";
 
 export function ErrorInfo({error}:{error: Error}){
     return <div style={{color: 'red'}}>
@@ -9,9 +10,9 @@ export function ErrorInfo({error}:{error: Error}){
 
 export function EmptyMain({search}:{search:any}){
     return <div className={classes.main__empty}>
-               <h1>Ничего не нашлось по запросу {search}</h1>
+               <h1>Ничего не нашлось по запросу "{search}"</h1>
                <p className={classes.main__empty__text}>Попробуйте поискать по-другому или сократить запрос</p>
-               <Link className={classes.link_icon}  href={'/'}><button className={classes.add__to__main__button}>Перейти на главную </button></Link>
+               <div className={classes.empty__block__img}><FaRegMeh className={classes.empty__img}/></div>
     </div>
 }
 
