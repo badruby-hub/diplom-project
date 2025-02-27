@@ -74,3 +74,32 @@
 .icon_search:hover{
     color: black;
 }
+
+/*кнопка Бургер меню*/
+.burger__btn{
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border: 1px solid #fff;
+    margin-inline: 4em auto;
+    border-radius: 10px;
+}
+
+.burger__btn span{
+    position: absolute;
+    left: 10px;
+    top: 28px;
+    width: 40px;
+    height: 5px;
+    background-color: black;
+    cursor: pointer;
+}
+
+.burger__btn span:nth-child(1){
+ transform: translateY(-15px);
+}
+
+.burger__btn span:nth-child(3){
+ transform: translateY(15px);
+}
+

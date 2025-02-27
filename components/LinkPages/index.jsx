@@ -4,6 +4,7 @@ import { SearchForm } from "../SearchForm/Search";
 import classes from "./Link.module.css"
 import useSWR from "swr";
 import { $search } from "@/store/search-product";
+import { BurgerBtn } from "../Buttons/Buttons";
 
 const
     pages = [
@@ -30,7 +31,8 @@ export function PagesWebsite() {
     console.log('Data from PagesWebsite:', data);
     return <header className={classes.header}>
         <nav className={classes.navigation} >
-            <div className={classes.icon__logo}>{<Link className={classes.link_icon} href={'/'} onClick={logoClick}>{<FaNeos />}</Link>}</div>
+            <div className={classes.block__logo}>{<Link className={classes.logo__link__icon} href={'/'} onClick={logoClick}>{<FaNeos className={classes.icon__logo}  />}</Link>}</div>
+             {<BurgerBtn/>}
             {data && <SearchForm data={data}/>}
             <ul className={classes.link_form}>
                 {pages.map(({ href, title }) =>
@@ -42,4 +44,18 @@ export function PagesWebsite() {
             </ul>
         </nav>
     </header>
+}
+
+
+export function BurgerMenu(){
+    return     <nav className={classes.burger__navigation} >
+        <ul className={classes.burger__link__form}>
+            {pages.map(({ href, title }) =>
+                <li className={classes.burger__link} key={href}>
+                    < Link className={classes.burger__link_icon} href={href}>
+                        {title}
+                    </Link>
+                </li>)}
+        </ul>
+    </nav>
 }
