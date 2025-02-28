@@ -1,8 +1,9 @@
 import Link from "next/link";
 import classes from "./Button.module.css"
 import { FaShoppingCart ,FaRegTrashAlt,FaSearch, FaTimes } from "react-icons/fa";
-import { useState } from "react";
-import {BurgerMenu}from '../LinkPages/index';
+import { $isOpen } from "@/store/store-data";
+import { useStore } from "@nanostores/react";
+
 
 export function BtnInSearch({clearForm, btnSearch}) {
 
@@ -13,16 +14,16 @@ export function BtnInSearch({clearForm, btnSearch}) {
 }
 
 export function BurgerBtn(){
-  const 
-     [open,setOpen] = useState(false);
-  const btnClick = ()=>{
-        setOpen(prevOpen=> !prevOpen);
-     };
+  const isOpen = useStore($isOpen); 
+const btnClick = ()=>{
+  const toggle = $isOpen.get()
+  $isOpen.set(!toggle);
+};
   return <div onClick={btnClick} className={classes.burger__btn}>
-            <span></span>
-            <span></span>
-            <span></span>
-            {open && <BurgerMenu className={classes.burger__menu}/>}
+    
+            <span className={isOpen ? classes.cross1 : classes.buger}></span>
+            <span className={isOpen ? classes.cross2 : classes.buger}></span>
+            <span className={isOpen ? classes.cross3 : classes.buger}></span>
           </div>
 }
 

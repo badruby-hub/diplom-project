@@ -3,10 +3,11 @@ import classesCart from "./TableCart.module.css"
 import {AddForm,DelPost, OrderBuy} from "../Buttons/Buttons"
 import Link from "next/link";
 
+
 export function TableMain({ data,addToCart,isInCart }) {
-    
-    console.debug('ObjTable render main-data', data);
+   
     return <main className={classes.product__section}>
+       
         {data.map(obj => <article className={classes.product__article} key={obj.id+Math.random()}>
             <figure className={classes.figure}>
                 <img className={classes.product__image} src={obj.images} alt={obj.title} />

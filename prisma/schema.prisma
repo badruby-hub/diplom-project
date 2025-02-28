@@ -21,16 +21,19 @@ model Product {
   description   String
   badge         Boolean         @default(false)
   images        String
-  categories    Category[]
+  categories    Category?       @relation(fields: [categoryId], references: [id])
+  categoryId    Int?
   productParams ProductParams[]
 }
 
 model Category {
-  id        Int      @id @default(autoincrement())
-  category  String
-  product   Product? @relation(fields: [productId], references: [id])
-  productId Int?
+  id       Int       @id @default(autoincrement())
+  category String
+  product  Product[]
+  label    String
 }
+
+
 
 model ProductParams {
   id        Int      @id @default(autoincrement())
@@ -63,6 +66,5 @@ model Cart {
   images String
   color  String
 }
-
 
 //-------------------------------- auth 

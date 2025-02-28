@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { TableMain,TableCart } from "../ObjTable/Obj-table";
 import {EmptyCart, EmptyMain} from "../Error/index";
 import {useStore} from "@nanostores/react";
-import { $search  } from "@/store/search-product";
+import { $search  } from "@/store/store-data";
 const
   API_URL = "api/product",
   CART_URL = "api/cart",

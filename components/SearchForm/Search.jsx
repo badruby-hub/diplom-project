@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
 import classes from "./Search.module.css";
 import {BtnInSearch} from "../Buttons/Buttons"
-import { $search } from "@/store/search-product";
+import { $search, $isOpen } from "@/store/store-data";
+import { useStore } from "@nanostores/react";
 
 export function SearchForm({ data }) {
     console.log('SearchForm',data);
@@ -69,6 +70,7 @@ export function SearchForm({ data }) {
       setSelectedIndex(-1);
     },
     inputClick = () => {
+        $isOpen.set(false);
         setIsOpen(true);
         setSelectedIndex(-1);
     };

@@ -83,23 +83,38 @@
     border: 1px solid #fff;
     margin-inline: 4em auto;
     border-radius: 10px;
+    cursor: pointer;
 }
 
 .burger__btn span{
     position: absolute;
+    border-radius: 10px;
     left: 10px;
     top: 28px;
     width: 40px;
     height: 5px;
     background-color: black;
-    cursor: pointer;
+    transition: transform .5s, opacity .5s;
+    
 }
 
-.burger__btn span:nth-child(1){
+.burger__btn .buger:nth-child(1){
  transform: translateY(-15px);
 }
 
-.burger__btn span:nth-child(3){
+.burger__btn .buger:nth-child(3){
  transform: translateY(15px);
 }
 
+
+.cross1 {
+    transform: rotate(-45deg);
+  }
+  
+  .cross2 {
+    opacity: 0; 
+  }
+  
+  .cross3 {
+    transform: rotate(45deg);
+  }

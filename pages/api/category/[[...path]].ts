@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 const prisma = new PrismaClient();
 
-export default async function productc(req: NextApiRequest, res: NextApiResponse) {
+export default async function category(req: NextApiRequest, res: NextApiResponse) {
   console.log("path product");
   const
     { query, method } = req,
@@ -16,7 +16,7 @@ export default async function productc(req: NextApiRequest, res: NextApiResponse
       res.writeHead(204);
       break;
     case 'GET':
-      const rows = await prisma.product.findMany();
+      const rows = await prisma.category.findMany();
       res.status(200).json(rows);
       break;
     case 'POST':
