@@ -1,82 +1,87 @@
-.product__details{
+.product__details {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
-    .add__to__cart__button{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 15vw;
-            height: 5vh;
-            color: #fff;
-            background-color: #b0b0b0;
-            font-size: 1vw;
-            border-radius: 7px;
-            cursor: pointer;
-       
-    }
 
-    .del__cart__button{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 2rem;
-        height: 2rem;
-        color: gray;
-        background-color: white;
-        border: none;
-        font-size: 1rem;
-        border-radius: 7px;
-        cursor: pointer;
-       outline: none;
-       margin: 1.5em;
-    }
-    .del__cart__button:hover{
-        color: black;
-    }
+.add__to__cart__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 15vw;
+    height: 5vh;
+    color: #fff;
+    background-color: #b0b0b0;
+    font-size: 1vw;
+    border-radius: 7px;
+    cursor: pointer;
 
-    .icon__cart{
-        margin-right: .3em;
-    }
-    .link_icon{
-        text-decoration: none;
-        color: black;
-    }
-    .add__to__cart__button:active{
-    background: rgba(208, 207, 207, 0.679);
-    }
-
-    .order__button{
-        border-radius: 10px;
-        padding: 11px 5px 13px;
-        margin: 1em ;
-        font-size: 16px;
-        font-weight: bold;
-        flex-grow: 1;
-        max-height: 7vh;
-    }
-
-
-    .block_btn_search{
-        display: flex;
-        align-items: center;
-   }
-
-   .block_icon_search{
-    padding: .5em; 
 }
-.icon_search{
-    font-size:x-large;
+
+.del__cart__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    color: gray;
+    background-color: white;
+    border: none;
+    font-size: 1rem;
+    border-radius: 7px;
+    cursor: pointer;
+    outline: none;
+    margin: 1.5em;
+}
+
+.del__cart__button:hover {
+    color: black;
+}
+
+.icon__cart {
+    margin-right: .3em;
+}
+
+.link_icon {
+    text-decoration: none;
+    color: black;
+}
+
+.add__to__cart__button:active {
+    background: rgba(208, 207, 207, 0.679);
+}
+
+.order__button {
+    border-radius: 10px;
+    padding: 11px 5px 13px;
+    margin: 1em;
+    font-size: 16px;
+    font-weight: bold;
+    flex-grow: 1;
+    max-height: 7vh;
+}
+
+
+.block_btn_search {
+    display: flex;
+    align-items: center;
+}
+
+.block_icon_search {
+    padding: .5em;
+}
+
+.icon_search {
+    font-size: x-large;
     color: gray;
 }
 
-.icon_search:hover{
+.icon_search:hover {
     color: black;
 }
 
 /*кнопка Бургер меню*/
-.burger__btn{
+.burger__btn {
     position: relative;
     width: 60px;
     height: 60px;
@@ -86,7 +91,7 @@
     cursor: pointer;
 }
 
-.burger__btn span{
+.burger__btn span {
     position: absolute;
     border-radius: 10px;
     left: 10px;
@@ -95,26 +100,26 @@
     height: 5px;
     background-color: black;
     transition: transform .5s, opacity .5s;
-    
+
 }
 
-.burger__btn .buger:nth-child(1){
- transform: translateY(-15px);
+.burger__btn .buger:nth-child(1) {
+    transform: translateY(-15px);
 }
 
-.burger__btn .buger:nth-child(3){
- transform: translateY(15px);
+.burger__btn .buger:nth-child(3) {
+    transform: translateY(15px);
 }
 
 
 .cross1 {
     transform: rotate(-45deg);
-  }
-  
-  .cross2 {
-    opacity: 0; 
-  }
-  
-  .cross3 {
+}
+
+.cross2 {
+    opacity: 0;
+}
+
+.cross3 {
     transform: rotate(45deg);
-  }
+}

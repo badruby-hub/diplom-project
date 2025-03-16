@@ -8,13 +8,13 @@ import { BurgerMenu } from "@/components/LinkPages";
 
 export default function App({
   Component,
-  pageProps:{pageProps}}: AppProps) {
-    const 
-       isOpen = useStore($isOpen)
+  pageProps: { pageProps } }: AppProps) {
+  const
+    isOpen = useStore($isOpen)
   return <>
-   {isOpen && <BurgerMenu />} 
-     <PagesWebsite/>
-     <Component {...pageProps} />
-     <Toaster/>
-    </>
+    {isOpen && <BurgerMenu />}
+    <PagesWebsite />
+    <Component {...pageProps} />
+    <Toaster />
+  </>
 }

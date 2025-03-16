@@ -1,5 +1,5 @@
 export default function Authorize() {
-    return <h1>
-      Авторизация 
-    </h1>
-  }
+  return <h1>
+    Авторизация
+  </h1>
+}

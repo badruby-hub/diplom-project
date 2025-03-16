@@ -1,5 +1,4 @@
-
-.product__section{
+.product__section {
     display: flex;
     flex-wrap: wrap;
     margin: 0 1.5rem 0 3.4rem;
@@ -7,45 +6,54 @@
     justify-content: space-between;
 }
 
-.product__main{
+.product__main {
     flex-grow: 1;
 }
 
-.product__article{
+.product__article {
     margin-block: 1em;
 }
 
-.cart__order__form{
+.cart__order__form {
     display: flex;
     flex-direction: column;
     height: 20rem;
-   aspect-ratio: 1/1;
+    aspect-ratio: 1/1;
 }
-.cart__order__form > section{
-     display: flex;
-     align-items: center;
-     justify-content: space-between;
+
+.cart__order__form>section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
-.product, .cart__delivery, .cart__pay,.cart__my__details,.cart__order__form{
+
+.product,
+.cart__delivery,
+.cart__pay,
+.cart__my__details,
+.cart__order__form {
     background-color: white;
     border-radius: 10px;
     padding: 20px;
     margin: 20px;
 }
-.order__count__product, .order__count__discount{ 
+
+.order__count__product,
+.order__count__discount {
     color: gray;
 }
 
-.order__total_amount{
+.order__total_amount {
     font-size: 20px;
     font-weight: bold;
 }
 
-.figure{
+.figure {
     display: flex;
-    margin: 0;   
+    margin: 0;
 }
-.product__image{
+
+.product__image {
     width: 7rem;
     margin-bottom: 1rem;
     border-radius: 10px;
@@ -53,42 +61,43 @@
     cursor: pointer;
 }
 
-.product__title{
+.product__title {
     font-size: 100%;
     margin-bottom: 1rem;
     cursor: pointer;
-} 
+}
 
-.link__url{
+.link__url {
     text-decoration: none;
     font-weight: bold;
     color: rgb(207, 70, 70);
 }
 
 
-.product__price{
+.product__price {
     margin: 0;
-   
+
 }
-.product__price strong{
+
+.product__price strong {
     margin-right: .3em;
 }
 
-.product__caption{
+.product__caption {
     display: flex;
     flex-direction: column;
     gap: 2rem;
     width: 100%;
 }
 
-.product__caption__info{
+.product__caption__info {
     display: flex;
     justify-content: space-between;
     margin: 0 1.5em;
     max-width: 90%;
 }
 
-.product__caption h2 { 
+.product__caption h2 {
     margin: 0;
     width: 10rem;
 }

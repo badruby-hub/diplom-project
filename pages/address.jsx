@@ -1,5 +1,5 @@
 export default function OurAddress() {
-    return <>
+  return <>
     <h1>Юр адрес</h1>
-    </>
-  }
+  </>
+}

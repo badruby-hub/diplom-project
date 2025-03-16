@@ -10,9 +10,9 @@ import { BurgerMenu } from "../components/LinkPages/index";
 
 export default function Home() {
   return <div className="home">
-  <Head>
-    <title>интернет-магазин:WILDBERRIS</title>
+    <Head>
+      <title>интернет-магазин:WILDBERRIS</title>
     </Head>
-     <JsphMain />
-    </div> 
- }
+    <JsphMain />
+  </div>
+}

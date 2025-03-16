@@ -33,8 +33,6 @@ model Category {
   label    String
 }
 
-
-
 model ProductParams {
   id        Int      @id @default(autoincrement())
   article   String
