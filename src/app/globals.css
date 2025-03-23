@@ -1,0 +1,15 @@
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+
+}
+
+header{
+  background-color: rgba(208, 207, 207, 0.679);
+  z-index: 99;
+  position: relative;
+}
