@@ -3,7 +3,6 @@ import Link from "next/link";
 import { FaShoppingCart, FaUserAlt, FaMapMarkerAlt, FaNeos } from "react-icons/fa";
 import { SearchForm } from "../SearchForm/Search";
 import classes from "./Link.module.css"
-import useSWR from "swr";
 import { $isOpen, $search } from "../../../store/store-data";
 import { BurgerBtn } from "../Buttons/Buttons";
 import { useStore } from "@nanostores/react";
@@ -36,6 +35,14 @@ export default function PagesWebsite() {
     const isClose = () => {
         $isOpen.set(false);
     };
+    const isOpen = useStore($isOpen);
+    useEffect(() => {
+          if (isOpen) {
+              document.body.classList.add('no-scroll');
+          } else {
+              document.body.classList.remove('no-scroll');
+          }
+      }, [isOpen]);
     console.log("PagesWebsite", data);
     return <nav className={classes.navigation}>
         <div className={classes.block__logo}>{<Link className={classes.logo__link} href={'/'} onClick={() => { logoClickSearchClear(), isClose(); }}>{<FaNeos className={classes.icon__logo} />}</Link>}</div>
@@ -71,7 +78,8 @@ export function BurgerMenu() {
     };
     useEffect(() => {
         categoryRepo.find({}).then(setData)
-    }, [])
+    }, []);
+
     console.log("burger menu data", data);
     return <>
         <nav className={isOpen ? classes.burger__navigation : classes.burger__animation__close}>
@@ -83,7 +91,7 @@ export function BurgerMenu() {
                 )}
                 {data.map(obj => (
                     <li className={classes.burger__li} key={obj.id} onClick={isClose}>
-                         {obj.category}
+                        {obj.category}
                     </li>
                 ))}
             </ul>
