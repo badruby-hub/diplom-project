@@ -7,8 +7,6 @@ export default function Home() {
   return (
     <div className="tiles">
       <JsphMain />
-     
-      <Admin />
     </div>
   );
 }

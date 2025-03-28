@@ -9,41 +9,21 @@ import { useStore } from "@nanostores/react";
 import { repo } from "remult";
 import { $search } from "../../../store/store-data";
 import { useState } from "react";
+import { Loader } from "@/components/Spinner";
 
 
 
 const productRepo = repo(Product);
 const cartRepo = repo(Cart);
 
-const fetchProduct = async () => {
-  const products = await productRepo.find({});
-  return products
+
+const fetchProduct = () => fetchData(productRepo);
+const fetchCart = () => fetchData(cartRepo);
+
+const fetchData = async (repo: any) => {
+  return await repo.find({});
 };
 
-const infoFetch = async () => {
-  console.log("infofetcher",);
-  const pr = fetchProduct();
-  toast.promise(pr, {
-    loading: "Загрузка",
-    error: (err) => `${err.toString()}`,
-  })
-  return pr
-};
-
-const fetchCart = async () => {
-  const cartItem = await cartRepo.find({});
-  return cartItem
-};
-
-const infoFetchCart = async () => {
-  console.log("infofetcher Cart",);
-  const ct = fetchCart();
-  toast.promise(ct, {
-    loading: "Загрузка",
-    error: (err) => `${err.toString()}`,
-  })
-  return ct
-};
 
 
 
@@ -56,7 +36,7 @@ export function JsphMain() {
     searchFilter: string = useStore($search);
 
   const
-    { data, error, isLoading, isValidating, mutate } = useSWR<Product[]>('products', infoFetch, { revalidateOnFocus: false }),
+    { data, error, isLoading, isValidating, mutate } = useSWR<Product[]>('products', fetchProduct, { revalidateOnFocus: false }),
     { data: cartData } = useSWR<Cart[]>('cart', fetchCart);
   let
     optimisticData;
@@ -91,14 +71,18 @@ export function JsphMain() {
       };
 
       if (data) {
-        optimisticData = await cartRepo.insert(cartItem);
-        toast.success("Товар добавлен в корзину");
-        await mutate(fetchProduct, { revalidate: true });
-        console.log("muteta", optimisticData);
+        try {
+          await cartRepo.insert(cartItem);
+          toast.success("Товар добавлен в корзину");
+          optimisticData = await fetchProduct();
+          await mutate(fetchProduct, { optimisticData, revalidate: true });
+          console.log("muteta", optimisticData);
+        } catch {
+          toast.error("Ошибка при добавлении товара в корзину");
+          console.error(error);
+        }
+
       }
-
-
-
     }
 
 
@@ -109,8 +93,8 @@ export function JsphMain() {
   return <>
     <div
       className={classes.loading}>
-      {isLoading && '⌛'}
-      {isValidating && '👁'}
+      {isLoading && <Loader />}
+      {isValidating && "👁"}
       {error && `❌ ${error.toString()}`}
     </div>
     {searchFilter.length > 0 && filteredData.length === 0 ?
@@ -129,7 +113,7 @@ export function JsphMain() {
 
 export function JsphCart() {
   const
-    { data, error, isLoading, isValidating, mutate } = useSWR<Cart[]>('cart', infoFetchCart, { revalidateOnFocus: false });
+    { data, error, isLoading, isValidating, mutate } = useSWR<Cart[]>('cart', fetchCart, { revalidateOnFocus: false });
   let
     optimisticData;
   const delPost = async (idProduct: number) => {
@@ -140,8 +124,8 @@ export function JsphCart() {
         optimisticData = data.filter(el => el.id !== (idProduct));
         toast.success("Товар удален")
         await mutate(fetchCart, { optimisticData, revalidate: true });
-        console.log("muteta cart", mutate);
       } catch (error: any) {
+        toast.error("Ошибка при удалении товара")
         console.log(error)
       }
     }
@@ -154,15 +138,16 @@ export function JsphCart() {
   return <>
     <div
       className={classes.loading}>
-      {isLoading && '⌛'}
-      {isValidating && '👁'}
+      {isLoading && <Loader />}
+      {isValidating && "👁"}
       {error && `❌ ${error.toString()}`}
     </div>
-    {data && data.length > 0
+    {data && data.length > 0 && !isLoading
       ?
-      <TableCart data={data} delPost={delPost} />
+      !isValidating && <TableCart data={data} delPost={delPost} />
       :
-      <EmptyCart />
+      !isValidating && <EmptyCart />
+
     }
   </>
 }
