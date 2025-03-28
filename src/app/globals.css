@@ -13,3 +13,8 @@ header{
   z-index: 99;
   position: relative;
 }
+
+.no-scroll {
+  overflow: hidden;
+  height: 100%;
+}
