@@ -32,6 +32,34 @@ export default function PagesWebsite() {
     const isClose = () => {
         $isOpen.set(false);
     };
+    const isOpen = useStore($isOpen);
+    useEffect(() => {
+        if (isOpen) {
+            document.body.classList.add('no-scroll');
+        } else {
+            document.body.classList.remove('no-scroll');
+        }
+    }, [isOpen]);
+    useEffect(() => {
+        remult
+            .initUser()
+            .then(user => {
+                setIsAuthenticated(!!user);
+                setStatus("Success")
+            })
+            .catch((e) => {
+                setIsAuthenticated(false);
+                setStatus("Error");
+            })
+    }, []);
+
+
+    const
+        pages = [
+            { href: '/address', title: <div className={classes.block__icon}><FaMapMarkerAlt className={classes.icon} /> Наш адрес</div> },
+            { href: isAuthenticated ? '/authorization' : '/api/auth/signin', title: <div className={classes.block__icon}><FaUserAlt className={classes.icon} /> {isAuthenticated ? 'Данные' : 'Войти'}</div> },
+            { href: '/cart', title: <div className={classes.block__icon}><FaShoppingCart className={classes.icon} /> Корзина</div> },
+        ];
     console.log("PagesWebsite", data);
     return <nav className={classes.navigation}>
         <div className={classes.block__logo}>{<Link className={classes.logo__link} href={'/'} onClick={() => { logoClickSearchClear(), isClose(); }}>{<FaNeos className={classes.icon__logo} />}</Link>}</div>
