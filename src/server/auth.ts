@@ -7,6 +7,7 @@ import { User } from "../demo/auth/User";
 import { Roles } from "../demo/auth/Roles";
 import Google from "next-auth/providers/google";
 import Yandex from "next-auth/providers/yandex";
+import VK from "next-auth/providers/vk";
 
 // Configuration for Auth.js
 const authConfig: NextAuthConfig = {
@@ -47,7 +48,14 @@ const authConfig: NextAuthConfig = {
         }),
     }),
     Google,
-    Yandex,
+    Yandex({
+      clientId: process.env.AUTH_YANDEX_ID, 
+      clientSecret: process.env.AUTH_YANDEX_SECRET,
+    }),
+    VK({
+      clientId: process.env.AUTH_VK_ID, 
+      clientSecret: process.env.AUTH_VK_SECRET,
+     }),
   ],
   callbacks: {
     signIn: (arg) =>
