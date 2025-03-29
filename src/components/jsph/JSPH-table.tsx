@@ -6,9 +6,9 @@ import toast from "react-hot-toast";
 import { TableMain, TableCart } from "../ObjTable/Obj-table";
 import { EmptyCart, EmptyMain } from "../Error/index";
 import { useStore } from "@nanostores/react";
-import { repo } from "remult";
+import { remult, repo } from "remult";
 import { $search } from "../../../store/store-data";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader } from "@/components/Spinner";
 
 
@@ -17,12 +17,17 @@ const productRepo = repo(Product);
 const cartRepo = repo(Cart);
 
 
-const fetchProduct = () => fetchData(productRepo);
-const fetchCart = () => fetchData(cartRepo);
-
-const fetchData = async (repo: any) => {
-  return await repo.find({});
+const fetchProduct = async () =>{
+  return await productRepo.find({});
 };
+
+const fetchCart = async () =>{
+  return await cartRepo.find({
+    where: { idUser: remult.user!.id }
+  });
+};
+
+
 
 
 
@@ -58,8 +63,15 @@ export function JsphMain() {
       return cartData && cartData.map(item => item.idProduct).includes(id);
     };
 
+
+
   const
     addToCart = async (obj: any) => {
+      if (!remult.user) {
+        toast.error("Пожалуйста, авторизуйтесь, чтобы добавить товар в корзину.");
+        return;
+      }
+      console.log("IDUser ", remult.user?.id);
       console.log("add", obj);
       const cartItem = {
         idProduct: obj.id,
@@ -68,6 +80,7 @@ export function JsphMain() {
         price: obj.price,
         images: obj.images,
         color: obj.color,
+        idUser: remult.user!.id,
       };
 
       if (data) {

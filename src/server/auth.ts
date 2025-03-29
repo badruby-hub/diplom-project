@@ -1,11 +1,12 @@
 import NextAuth, { NextAuthConfig } from "next-auth";
 import type { ProviderType } from "next-auth/providers";
 import Credentials from "next-auth/providers/credentials";
-import GitHub from "next-auth/providers/github";
 import { repo, withRemult, type UserInfo } from "remult";
 import bcrypt from "bcryptjs";
 import { User } from "../demo/auth/User";
 import { Roles } from "../demo/auth/Roles";
+import Google from "next-auth/providers/google";
+import Yandex from "next-auth/providers/yandex";
 
 // Configuration for Auth.js
 const authConfig: NextAuthConfig = {
@@ -45,7 +46,8 @@ const authConfig: NextAuthConfig = {
           return null; // If credentials are invalid, return null
         }),
     }),
-    GitHub,
+    Google,
+    Yandex,
   ],
   callbacks: {
     signIn: (arg) =>
