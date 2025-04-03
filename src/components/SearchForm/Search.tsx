@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import classes from "./Search.module.css";
 import { BtnInSearch } from "../Buttons/Buttons"
-import { $search, $isOpen } from "../../../store/store-data";
+import { $search, $isOpen, $filter } from "../../../store/store-data";
 import { Product } from "../../../shared/entities/Product";
 import { repo, } from "remult";
 import { useStore } from "@nanostores/react";
@@ -37,6 +37,7 @@ export function SearchForm() {
             const textInValue: string | null = event.currentTarget.textContent;
             // setSearch(textInValue);
             $search.set(textInValue || '');
+            $filter.set(textInValue || '');
             setIsOpen(!isOpen);
         },
         eventSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -46,6 +47,7 @@ export function SearchForm() {
                     const selectedItem = sortAndFilterData[selectedIndex];
                     if (selectedItem) {
                         // setSearch(selectedItem.title);
+                        $filter.set(selectedItem.title);
                         $search.set(selectedItem.title);
                     }
                 } else {
@@ -55,7 +57,13 @@ export function SearchForm() {
                 setIsOpen(!isOpen);
                 setSelectedIndex(-1);
             }
-
+            if(event.key === "Enter"){
+                event.preventDefault();
+                $search.set(search);
+                $filter.set(search);
+                setIsOpen(false);
+                setSelectedIndex(-1);
+            }
             if (event.key === 'Backspace') {
                 setIsOpen(true);
             }
@@ -71,11 +79,13 @@ export function SearchForm() {
         btnSearch = (event: React.MouseEvent<HTMLButtonElement>) => {
             event.preventDefault();
             $search.set(search);
+            $filter.set(search);
             setIsOpen(false);
             setSelectedIndex(-1);
         },
         clearForm = () => {
             $search.set('');
+            $filter.set('');
             setSelectedIndex(-1);
         },
         inputClick = () => {
@@ -93,11 +103,11 @@ export function SearchForm() {
                 onClick={inputClick}
                 onKeyDown={eventSearch}
             />
-
-            <ul className={classes.autocomplete}>
-                {
-                    search && isOpen
-                        ? sortAndFilterData
+            {
+                search && isOpen
+                    ?
+                    <ul className={classes.autocomplete}>{
+                        sortAndFilterData
                             .filter(row => {
                                 if (!search.length) return true;
                                 for (const key in row) {
@@ -115,10 +125,11 @@ export function SearchForm() {
                                     className={`${classes.autocomplete__item} ${selectedIndex === index ? classes.selected : ''}`}
                                 >{row.title}</li>
                             })
-                        :
-                        null
-                }
-            </ul>
+                    }</ul>
+                    :
+                    null
+            }
+
             {search.length > 0 ? (
                 <BtnInSearch btnSearch={btnSearch} clearForm={clearForm} />
             ) : null}

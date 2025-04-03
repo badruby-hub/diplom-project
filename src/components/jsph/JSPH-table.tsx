@@ -7,7 +7,7 @@ import { TableMain, TableCart } from "../ObjTable/Obj-table";
 import { EmptyCart, EmptyMain } from "../Error/index";
 import { useStore } from "@nanostores/react";
 import { remult, repo } from "remult";
-import { $search } from "../../../store/store-data";
+import { $filter, $search } from "../../../store/store-data";
 import { Loader } from "@/components/Spinner";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -22,7 +22,7 @@ const fetchProduct = async () => {
 
 export function JsphMain() {
   const
-    searchFilter: string = useStore($search);
+    searchFilter: string = useStore($filter);
   const 
     {data:session} = useSession();
   const

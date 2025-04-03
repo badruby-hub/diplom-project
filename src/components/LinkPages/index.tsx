@@ -3,7 +3,7 @@ import Link from "next/link";
 import { FaShoppingCart, FaUserAlt, FaMapMarkerAlt, FaNeos } from "react-icons/fa";
 import { SearchForm } from "../SearchForm/Search";
 import classes from "./Link.module.css"
-import { $isOpen, $search } from "../../../store/store-data";
+import { $filter, $isOpen, $search } from "../../../store/store-data";
 import { BurgerBtn } from "../Buttons/Buttons";
 import { useStore } from "@nanostores/react";
 import { useEffect, useState } from "react";
@@ -27,6 +27,7 @@ export default function PagesWebsite() {
     const
         logoClickSearchClear = () => {
             $search.set('');
+            $filter.set('');
         };
     const isClose = () => {
         $isOpen.set(false);
