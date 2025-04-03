@@ -2,13 +2,42 @@ import classes from "./TableMain.module.css"
 import classesCart from "./TableCart.module.css"
 import { AddForm, DelPost, OrderBuy } from "../Buttons/Buttons"
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
+import { FaTimes } from "react-icons/fa";
+import { repo } from "remult";
+import { ProductParams } from "../../../shared/entities/ProductParams";
 
 
-export function TableMain({ data , addToCart, isInCart }) {
+export function TableMain({ data, addToCart, isInCart }) {
+    const [params, setParams] = useState([]);
+    const [isOpen, setIsOpen] = useState(null);
+    const [visible, setVisible] = useState(null);
+    const [parameter, setParameter] = useState([]);
+    useEffect(() => {
+        const fetchParams = async () => {
+            try {
+                const result = await repo(ProductParams).find({})
+                setParams(result);
+            } catch (error) {
+                console.error("Error fetching product parameters:", error);
+            }
+        };
+        fetchParams();
+    }, []);
+    const openDialog = async (id) => {
+        const productParams = params.find(param => param.id === id);
+        setIsOpen(id);
+        setParameter(productParams);
+        console.log(productParams);
+    };
 
+    const closeDialog = () => {
+        setIsOpen(null);
+    };
     return <main className={classes.product__section}>
 
-        {data.map(obj => <article className={classes.product__article} key={obj.id + Math.random()}>
+        {data.map(obj => <article onMouseEnter={()=>setVisible(obj.id)} onMouseLeave={()=> setVisible(null)} className={classes.product__article} key={obj.id + Math.random()}>
             <figure className={classes.figure}>
                 <img className={classes.product__image} src={obj.images} alt={obj.title} />
                 <figcaption className={classes.product__caption}>
@@ -17,13 +46,36 @@ export function TableMain({ data , addToCart, isInCart }) {
                 </figcaption>
             </figure>
             <AddForm selectCart={isInCart(obj.id)} addToCart={() => addToCart(obj)} />
+            {visible === obj.id && <button className={classes.btn__modal__open} onClick={() => openDialog(obj.id)}> Быстрый просмотр </button>}
+            <Dialog open={isOpen === obj.id} onClose={closeDialog}>
+                <div className={classes.modal__bg}>
+                    <DialogPanel className={classes.popup}>
+                        <FaTimes className={classes.modal__btn__close} onClick={closeDialog} />
+                        <section className={classes.modal__block__section} >
+                            <div className={classes.modal__block__img}><img src={obj.images} alt={obj.title} /></div>
+                            <div className={classes.modal__block__content}>
+                                <DialogTitle className={classes.modal__title}>
+                                    {obj.title}
+                                </DialogTitle>
+                                <div>
+                                    <p className={classes.modal__product}><span className={classes.modal__product__params}>{parameter.gender}</span></p>
+                                </div>
+                                <p className={classes.modal__product__price}><span className={classes.modal__product__value}>{obj.price}₽</span></p>
+                                <div>
+                                    <p className={classes.modal__product__price}>Цвет:<span className={classes.modal__product__color}>{parameter.color}</span></p>
+                                </div>
+                            </div>
+                        </section>
+                    </DialogPanel>
+                </div>
+            </Dialog>
         </article>
         )}
     </main>
 
 }
 
-export function TableCart({ data,delPost }) {
+export function TableCart({ data, delPost }) {
 
     const
         countPrice = data.reduce((acc, obj) => acc + obj.price, 0),
@@ -82,8 +134,8 @@ export function TableCart({ data,delPost }) {
     </section>
 }
 
-export function TableProfile(){
+export function TableProfile() {
     return <>
-       <h1>данные пользователя </h1>
-        </>
+        <h1>данные пользователя </h1>
+    </>
 }

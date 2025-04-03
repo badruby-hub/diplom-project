@@ -4,6 +4,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import PagesWebsite, { BurgerMenu } from "@/components/LinkPages"
 import { Toaster } from "react-hot-toast";
+import { SessionProvider } from "next-auth/react";
+import { AppProps } from "next/app";
 
 
 const geistSans = localFont({
@@ -23,9 +25,9 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
+  children, session
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode, session: AppProps & never;
 }>) {
   return (
     <html lang="en">
@@ -34,8 +36,10 @@ export default function RootLayout({
         <header>
         <PagesWebsite/>
         </header>
+        <SessionProvider session={session}>
         <BurgerMenu/>
         {children}
+        </SessionProvider>
       </body>
     </html>
   );

@@ -6,6 +6,8 @@
 }
 
 .product__article {
+    position: relative;
+    background-color: #ececec;
     max-width: 13vw;
     margin: 20px;
     padding: 20px;
@@ -43,4 +45,99 @@
 
 .strong {
     margin-right: .3em;
+}
+
+/*Pop Up*/
+
+.modal__bg {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 999;
+}
+
+.popup {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: relative;
+    background: gray;
+    width: 1100px;
+    height: 750px;
+    border-radius: 20px;
+}
+
+.modal__block__section {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    
+
+
+}
+
+
+.modal__block__img img {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px 0 0 20px;
+}
+
+.modal__block__img {
+    width: 50%;
+    height: 100%;
+}
+
+.modal__block__content {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    width: 48%;
+    padding: 1em ;
+    border-radius: 0 20px 20px 0;
+}
+
+.modal__btn__close {
+    position: absolute;
+    top: 13px;
+    right: 13px;
+    max-width: 30px;
+    font-size: 25px;
+    color:gray;
+}
+
+.modal__btn__close:hover{
+    color: black;
+}
+
+.modal__title{
+    max-width: 520px;
+}
+
+.modal__product__value{
+    font-size: 25px;
+    font-weight:800;
+}
+
+.btn__modal__open{
+    cursor: pointer;
+    position: absolute;
+    font-size: 17px;
+    font-weight: 500;
+    height: 40px;
+    bottom: 190px;
+    right: 30px;
+    left: 30px;
+    border-radius: 10px;
+    border: none;
+    background: rgba(235, 235, 235, 0.7);
+}
+.btn__modal__open:hover{
+    background: rgb(255, 255, 255);
 }

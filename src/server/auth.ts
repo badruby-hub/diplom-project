@@ -5,9 +5,12 @@ import { repo, withRemult, type UserInfo } from "remult";
 import bcrypt from "bcryptjs";
 import { User } from "../demo/auth/User";
 import { Roles } from "../demo/auth/Roles";
-import Google from "next-auth/providers/google";
+
+
+
+import Google from "next-auth/providers/google"
+import Vk from "next-auth/providers/vk"
 import Yandex from "next-auth/providers/yandex";
-import VK from "next-auth/providers/vk";
 
 // Configuration for Auth.js
 const authConfig: NextAuthConfig = {
@@ -52,7 +55,7 @@ const authConfig: NextAuthConfig = {
       clientId: process.env.AUTH_YANDEX_ID, 
       clientSecret: process.env.AUTH_YANDEX_SECRET,
     }),
-    VK({
+    Vk({
       clientId: process.env.AUTH_VK_ID, 
       clientSecret: process.env.AUTH_VK_SECRET,
      }),

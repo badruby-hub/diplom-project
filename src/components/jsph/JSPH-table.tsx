@@ -8,41 +8,44 @@ import { EmptyCart, EmptyMain } from "../Error/index";
 import { useStore } from "@nanostores/react";
 import { remult, repo } from "remult";
 import { $search } from "../../../store/store-data";
-import { useEffect, useState } from "react";
 import { Loader } from "@/components/Spinner";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 
 
-const productRepo = repo(Product);
-const cartRepo = repo(Cart);
 
-
-const fetchProduct = async () =>{
-  return await productRepo.find({});
+const fetchProduct = async () => {
+  return await repo(Product).find({});
 };
-
-const fetchCart = async () =>{
-  return await cartRepo.find({
-    where: { idUser: remult.user!.id }
-  });
-};
-
-
-
-
-
-
-
-
 
 
 export function JsphMain() {
   const
     searchFilter: string = useStore($search);
-
+  const 
+    {data:session} = useSession();
   const
     { data, error, isLoading, isValidating, mutate } = useSWR<Product[]>('products', fetchProduct, { revalidateOnFocus: false }),
-    { data: cartData } = useSWR<Cart[]>('cart', fetchCart);
+    [cartData, setCartData] = useState<Cart[]>([]);
+  useEffect(() => {
+    const fetchCartData = async () => {
+      if(session?.user?.id){
+        try {
+          const cartItems =await repo(Cart).find({
+            where: { idUser: session?.user?.id }
+          })
+          setCartData(cartItems);
+        } catch (error) {
+          toast.error('')
+          return []
+        }
+
+      }
+    }
+    fetchCartData();
+  }, []);
+
   let
     optimisticData;
   const
@@ -67,11 +70,11 @@ export function JsphMain() {
 
   const
     addToCart = async (obj: any) => {
-      if (!remult.user) {
+      if (!session?.user) {
         toast.error("Пожалуйста, авторизуйтесь, чтобы добавить товар в корзину.");
         return;
       }
-      console.log("IDUser ", remult.user?.id);
+      console.log("IDUser ", session?.user?.id);
       console.log("add", obj);
       const cartItem = {
         idProduct: obj.id,
@@ -80,12 +83,12 @@ export function JsphMain() {
         price: obj.price,
         images: obj.images,
         color: obj.color,
-        idUser: remult.user!.id,
+        idUser: session?.user!.id,
       };
 
       if (data) {
         try {
-          await cartRepo.insert(cartItem);
+          await repo(Cart).insert(cartItem);
           toast.success("Товар добавлен в корзину");
           optimisticData = await fetchProduct();
           await mutate(fetchProduct, { optimisticData, revalidate: true });
@@ -125,15 +128,31 @@ export function JsphMain() {
 
 
 export function JsphCart() {
+  const { data: session } = useSession();
+  const fetchCart = async () => {
+
+    if (session?.user?.id) {
+      try {
+        return await repo(Cart).find({
+          where: { idUser: session?.user?.id }
+        })
+      } catch (error) {
+        toast.error('')
+        return []
+      }
+    }
+    return []
+  };
+
   const
-    { data, error, isLoading, isValidating, mutate } = useSWR<Cart[]>('cart', fetchCart, { revalidateOnFocus: false });
+    { data, error, isLoading, isValidating, mutate } = useSWR<Cart[]>('cart', fetchCart, { revalidateOnFocus: true });
   let
     optimisticData;
   const delPost = async (idProduct: number) => {
     console.log("Удаление товара с id:", idProduct);
     if (data) {
       try {
-        await cartRepo.delete(idProduct);
+        await repo(Cart).delete(idProduct);
         optimisticData = data.filter(el => el.id !== (idProduct));
         toast.success("Товар удален")
         await mutate(fetchCart, { optimisticData, revalidate: true });
@@ -149,7 +168,7 @@ export function JsphCart() {
 
 
   return <>
-    <div
+      <div
       className={classes.loading}>
       {isLoading && <Loader />}
       {isValidating && "👁"}

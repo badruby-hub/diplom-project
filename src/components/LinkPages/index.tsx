@@ -11,8 +11,7 @@ import { Product } from "../../../shared/entities/Product";
 import { remult, repo } from "remult";
 import { Category } from "../../../shared/entities/Category";
 import Tile, { type TileStatus } from "../../demo/Tile";
-const productRepo = repo(Product);
-const categoryRepo = repo(Category);
+
 
 
 
@@ -23,7 +22,7 @@ export default function PagesWebsite() {
     const [status, setStatus] = useState<TileStatus>("Loading");
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     useEffect(() => {
-        productRepo.find({}).then(setData);
+        repo(Product).find({}).then(setData);
     }, []);
     const
         logoClickSearchClear = () => {
@@ -94,7 +93,7 @@ export function BurgerMenu() {
         $isOpen.set(!toggle);
     };
     useEffect(() => {
-        categoryRepo.find({}).then(setData)
+        repo(Category).find({}).then(setData)
     }, []);
 
     console.log("burger menu data", data);
