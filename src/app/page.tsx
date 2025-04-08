@@ -1,5 +1,7 @@
-"use client"
-import { JsphMain } from "@/components/jsph/JSPH-table";
+
+// import { JsphMain } from "@/components/jsph/JSPH-table";
+
+import { JsphMain } from "@/components/jsph/Main_Cart";
 
 export default function Home() {
   return (

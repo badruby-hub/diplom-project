@@ -2,9 +2,8 @@
 import classes from "./Jsph.module.css";
 import useSWR from "swr";
 import { Product } from "../../../shared/entities/Product";
-import { Cart } from "../../../shared/entities/Cart";
 import toast from "react-hot-toast";
-import { TableMain, TableCart } from "../ObjTable/Obj-table";
+import { TableMain, TableCart } from "../ObjTable/Obj-table_cart_main";
 import { EmptyCart, EmptyMain } from "../Error/index";
 import { useStore } from "@nanostores/react";
 import { remult, repo } from "remult";
@@ -12,6 +11,7 @@ import { $filter, $search } from "../../../store/store-data";
 import { Loader } from "@/components/Spinner";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { CartItem } from "../../../shared/entities/CartItem";
 
 
 
@@ -30,26 +30,8 @@ export function JsphMain() {
   const
     { data: session } = useSession();
 
-
-  const fetchCartData = async () => {
-    if (session?.user?.id) {
-      try {
-        return await repo(Cart).find({
-          where: { idUser: session?.user?.id }
-        })
-      } catch (error) {
-        toast.error('')
-        return []
-      }
-
-    }
-    return []
-  };
-
   const
-    { data, error, isLoading, isValidating, mutate } = useSWR<Product[]>('products', fetchProduct, { revalidateOnFocus: false }),
-    { data: cartData } = useSWR<Cart[]>('cart', fetchCartData, { revalidateOnFocus: false });
-
+    { data, error, isLoading, isValidating, mutate } = useSWR<Product[]>('products', fetchProduct, { revalidateOnFocus: false });
   let
     optimisticData;
   const
@@ -63,12 +45,7 @@ export function JsphMain() {
     }) : [];
 
 
-  const
-    isInCart = (id: number) => {
-      console.log("isInCart", cartData);
-      if (!cartData) return false;
-      return cartData && cartData.map(item => item.idProduct).includes(id);
-    };
+
 
 
 
@@ -80,19 +57,14 @@ export function JsphMain() {
       }
       console.log("IDUser ", session?.user?.id);
       console.log("add", obj);
-      const cartItem = {
-        idProduct: obj.id,
-        title: obj.title,
-        description: obj.description,
-        price: obj.price,
-        images: obj.images,
-        color: obj.color,
-        idUser: session?.user!.id,
+      const cart = {
+        productId: obj.id,
+        userId: session?.user!.id,
       };
 
       if (data) {
         try {
-          await repo(Cart).insert(cartItem);
+          await repo(CartItem).insert(cart);
           toast.success("Товар добавлен в корзину");
           optimisticData = await fetchProduct();
           await mutate(fetchProduct, { optimisticData, revalidate: true });
@@ -127,36 +99,35 @@ export function JsphMain() {
 
 //Корзина 
 
-
+const fetchCart = async () => {
+    try {
+      return await repo(CartItem).find({
+        include: {
+          product: true 
+        }
+      })
+    } catch (error) {
+      toast.error('Авторизуйтесь чтобы увидеть свою корзину ')
+      throw error;
+  }
+};
 
 
 
 export function JsphCart() {
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
  //useCallBack
-   const fetchCart = async () => {
-    if (session?.user?.id) {
-      try {
-        return await repo(Cart).find({
-          where: { idUser: session?.user?.id }
-        })
-      } catch (error) {
-        toast.error('Авторизуйтесь чтобы увидеть свою корзину ')
-        return []
-      }
-    }
-    return []
-  };
+ 
 
   const
-    { data, error, isLoading, isValidating, mutate } = useSWR<Cart[]>('cart', fetchCart, { revalidateOnFocus: true });
+    { data, error, isLoading, isValidating, mutate } = useSWR<CartItem[]>('cart', fetchCart, { revalidateOnFocus: true });
   let
     optimisticData;
   const delPost = async (idProduct: number) => {
     console.log("Удаление товара с id:", idProduct);
     if (data) {
       try {
-        await repo(Cart).delete(idProduct);
+        await repo(CartItem).delete(idProduct);
         optimisticData = data.filter(el => el.id !== (idProduct));
         toast.success("Товар удален")
         await mutate(fetchCart, { optimisticData, revalidate: true });

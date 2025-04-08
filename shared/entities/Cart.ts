@@ -2,6 +2,7 @@ import { Entity, Fields, Relations } from "remult";
 
 @Entity("cart", {
     allowApiCrud: true,
+
 })
 export class Cart {
     @Fields.autoIncrement()
