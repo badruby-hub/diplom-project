@@ -104,9 +104,7 @@ export function TableCart({ data, delPost }) {
     if (error) return <>
     <ErrorInfo/>
     </>;
-    if (!productData) return <>
-    <Loader/>
-    </>;
+    if (!productData) return
     const
         countPrice = productData.reduce((acc, obj) => acc + obj.price, 0),
         discount = Math.round(countPrice * 0.25);
