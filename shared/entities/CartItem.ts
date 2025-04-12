@@ -22,8 +22,8 @@ export class CartItem {
 @Relations.toOne(() => User, { field: "userId" })
     user?: User
 
-@Fields.string({ allowNull: true })
-productId?: string
+@Fields.integer({ allowNull: true })
+productId = 0 ;
 
  @Relations.toOne(() => User, { field: "userId" })
     product?: Product

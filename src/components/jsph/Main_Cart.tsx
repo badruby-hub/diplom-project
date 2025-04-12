@@ -115,9 +115,6 @@ const fetchCart = async () => {
 
 
 export function JsphCart() {
-  // const { data: session } = useSession();
- //useCallBack
- 
 
   const
     { data, error, isLoading, isValidating, mutate } = useSWR<CartItem[]>('cart', fetchCart, { revalidateOnFocus: true });
@@ -149,16 +146,9 @@ export function JsphCart() {
       {isValidating && "👁"}
       {error && `❌ ${error.toString()}`}
     </div>
-    {/* {data && data.length > 0 && !isLoading
-      ?
-      !isValidating && <TableCart data={data} delPost={delPost} />
-      :
-      !isValidating &&  <EmptyCart />
-
-    } */}
     {data && data.length > 0 && !isLoading
       ? <TableCart data={data} delPost={delPost} />
-      : <EmptyCart />
+      : !isLoading && <EmptyCart />
     }
   </>
 }

@@ -7,6 +7,11 @@ import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { FaTimes } from "react-icons/fa";
 import { repo } from "remult";
 import { ProductParams } from "../../../shared/entities/ProductParams";
+import { Product } from "../../../shared/entities/Product";
+import useSWR from "swr";
+import { Loader } from "../Spinner";
+import { ErrorInfo } from "../Error";
+
 
 
 export function TableMain({ data, addToCart, /*isInCart*/ }) {
@@ -37,7 +42,7 @@ export function TableMain({ data, addToCart, /*isInCart*/ }) {
     };
     return <main className={classes.product__section}>
 
-        {data.map(obj => <article onMouseEnter={()=>setVisible(obj.id)} onMouseLeave={()=> setVisible(null)} className={classes.product__article} key={obj.id + Math.random()}>
+        {data.map(obj => <article onMouseEnter={() => setVisible(obj.id)} onMouseLeave={() => setVisible(null)} className={classes.product__article} key={obj.id + Math.random()}>
             <figure className={classes.figure}>
                 <img className={classes.product__image} src={obj.images} alt={obj.title} />
                 <figcaption className={classes.product__caption}>
@@ -75,18 +80,43 @@ export function TableMain({ data, addToCart, /*isInCart*/ }) {
 
 }
 
-export function TableCart({ data, delPost }) {
 
+
+
+export function TableCart({ data, delPost }) {
+    const fetchData = async () => {
+        try {
+            const productIds = data.map(item => item.productId);
+            console.log('ObjTable render cart-data',productIds);
+             const products = await
+                    repo(Product)
+                        .find({
+                            where: { id: productIds  }
+                        });
+                        console.log('ObjTable render cart-data',products);
+                        return products
+                       
+        } catch (error) {
+              throw error;
+        }
+    };
+    const  { data: productData, error } = useSWR('product', fetchData, { revalidateOnFocus: true });
+    if (error) return <>
+    <ErrorInfo/>
+    </>;
+    if (!productData) return <>
+    <Loader/>
+    </>;
     const
-        countPrice = data.reduce((acc, obj) => acc + obj.price, 0),
+        countPrice = productData.reduce((acc, obj) => acc + obj.price, 0),
         discount = Math.round(countPrice * 0.25);
     //переменная для счетчика считать общую сумму  ! 
-    console.debug('ObjTable render cart-data', data);
+    console.debug('ObjTable render cart-data',productData);
     return <section className={classesCart.product__section}>
         <main className={classesCart.product__main}>
             <section className={classesCart.product}>
                 <h2>Корзина</h2>
-                {data.map(obj => <article className={classesCart.product__article} key={obj.id}>
+                {productData.map(obj => <article className={classesCart.product__article} key={obj.id}>
                     <figure className={classesCart.figure}>
                         <img className={classesCart.product__image} src={obj.images} alt={obj.title} />
                         <figcaption className={classesCart.product__caption}>
