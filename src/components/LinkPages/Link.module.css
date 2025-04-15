@@ -225,3 +225,9 @@
 
 
 }
+
+@media(max-width:600px) {
+    .navigation{
+        justify-content: space-around;
+    }
+}

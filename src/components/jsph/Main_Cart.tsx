@@ -117,26 +117,26 @@ const fetchCart = async () => {
 export function JsphCart() {
 
   const
-    { data, error, isLoading, isValidating, mutate } = useSWR<CartItem[]>('cart', fetchCart, { revalidateOnFocus: true });
+    { data, error, isLoading, isValidating, mutate } = useSWR<CartItem[]>('cartItem', fetchCart, { revalidateOnFocus: true });
   let
     optimisticData;
-  const delPost = async (idProduct: number) => {
-    console.log("Удаление товара с id:", idProduct);
-    if (data) {
-      try {
-        await repo(CartItem).delete(idProduct);
-        optimisticData = data.filter(el => el.id !== (idProduct));
-        toast.success("Товар удален")
-        await mutate(fetchCart, { optimisticData, revalidate: true });
-      } catch (error: any) {
-        toast.error("Ошибка при удалении товара")
-        console.log(error)
-      }
-    }
-    if (!data) {
-      throw new Error();
-    }
-  }
+    const delPost = async (productId: number) => {
+          console.log("Удаление товара с id:", productId);
+          if (data) {
+            try {
+              await repo(CartItem).delete(productId);
+              optimisticData = data.filter(el => el.productId !== (productId));
+              toast.success("Товар удален")
+              await mutate(fetchCart, { optimisticData, revalidate: true });
+            } catch (error: any) {
+              toast.error("Ошибка при удалении товара")
+              console.log(error)
+            }
+          }
+          if (!data) {
+            throw new Error();
+          }
+        }
 
 
   return <>

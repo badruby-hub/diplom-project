@@ -33,8 +33,8 @@ export function AddForm({ addToCart, selectCart }) {
     <>
       <div className={classes.product__details}>
         {selectCart
-          ? <Link className={classes.link_icon} href={'/cart'}><button className={classes.add__to__cart__button}>Перейти в корзину </button></Link>
-          : <button onClick={addToCart} className={classes.add__to__cart__button}><><FaShoppingCart className={classes.icon__cart} /> | Добавить в корзину</></button>
+          ? <Link className={classes.link_icon} href={'/cart'}><button className={classes.add__card__btn}>Перейти в корзину </button></Link>
+          : <button onClick={addToCart} className={classes.add__card__btn}><><FaShoppingCart className={classes.icon__cart} /> | Добавить в корзину</></button>
         }
       </div>
     </>

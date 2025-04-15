@@ -1,4 +1,6 @@
-
+/* *{
+  border: 1px solid gray;
+} */
 body {
   margin: 0;
   display: flex;

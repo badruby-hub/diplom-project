@@ -1,22 +1,24 @@
 .product__details {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    margin: 10px 10px 20px 10px;
 }
 
-.add__to__cart__button {
+.add__card__btn {
     display: flex;
-    align-items: center;
     justify-content: center;
-    width: 250px;
-    height: 5vh;
-    color: #fff;
-    background-color: #b0b0b0;
-    font-size: 15px;
-    font-weight: 600;
-    border-radius: 7px;
-    cursor: pointer;
+    align-items: center;
+    width: 100%;
+    font-weight: 400;
+    font-size: 17px;
+    color: black;
+    padding: 12px;
+    text-align: center;
+    border: 1px solid black;
+    border-radius: 4px;
+}
 
+.add__card__btn:hover {
+    background-color: gray;
+    color: white;
 }
 
 .del__cart__button {
@@ -87,7 +89,7 @@
     width: 60px;
     height: 60px;
     border: 1px solid #fff;
-    margin-inline: 4em auto;
+    
     border-radius: 10px;
     cursor: pointer;
 }
@@ -123,4 +125,11 @@
 
 .cross3 {
     transform: rotate(45deg);
+}
+
+
+@media(min-width: 600px){
+    .burger__btn{
+        margin-inline: 4em auto;
+    }
 }

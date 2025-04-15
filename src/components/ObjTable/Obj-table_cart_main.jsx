@@ -1,6 +1,6 @@
-import classes from "./TableMain.module.css"
-import classesCart from "./TableCart.module.css"
-import { AddForm, DelPost, OrderBuy } from "../Buttons/Buttons"
+import classes from "./style.module.css";
+import classesCart from "./TableCart.module.css";
+import { AddForm, DelPost, OrderBuy } from "../Buttons/Buttons";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
@@ -9,7 +9,6 @@ import { repo } from "remult";
 import { ProductParams } from "../../../shared/entities/ProductParams";
 import { Product } from "../../../shared/entities/Product";
 import useSWR from "swr";
-import { Loader } from "../Spinner";
 import { ErrorInfo } from "../Error";
 
 
@@ -40,18 +39,24 @@ export function TableMain({ data, addToCart, /*isInCart*/ }) {
     const closeDialog = () => {
         setIsOpen(null);
     };
-    return <main className={classes.product__section}>
-
-        {data.map(obj => <article onMouseEnter={() => setVisible(obj.id)} onMouseLeave={() => setVisible(null)} className={classes.product__article} key={obj.id + Math.random()}>
-            <figure className={classes.figure}>
-                <img className={classes.product__image} src={obj.images} alt={obj.title} />
-                <figcaption className={classes.product__caption}>
-                    <p className={classes.product__price}><strong className={classes.storng}>Цена:</strong><span className={classes.product__value}>{obj.price}₽</span></p>
-                    <h2 className={classes.product__title}>{obj.title}</h2>
-                </figcaption>
-            </figure>
+    return <main className={classes.cards}> 
+    <section className={`${classes.container} ${classes.container__cards}`}>
+        {data.map(obj => <article onMouseEnter={() => setVisible(obj.id)} onMouseLeave={() => setVisible(null)} className={classes.card} key={obj.id + Math.random()}>
+            <section className={classes.card__top}>
+                <Link href="#!" className={classes.card__img}>
+                    <img  src={obj.images} alt={obj.title} />
+                </Link>
+                <span className={classes.card__label}>-10%</span>
+            </section>
+            <section className={classes.card__bottom}>
+                <div className={classes.card__prices}>
+                    <span className={`${classes.card__price} ${classes.card__price__discount}`}>1200</span>
+                    <span className={`${classes.card__price} ${classes.card__price__common}`}>{obj.price}</span>
+                </div>
+                <Link href="#!" className={classes.card__title}>{obj.title}</Link>
+            </section>
             <AddForm /*selectCart={isInCart(obj.id)}*/ addToCart={() => addToCart(obj)} />
-            {visible === obj.id && <button className={classes.btn__modal__open} onClick={() => openDialog(obj.id)}> Быстрый просмотр </button>}
+            <button className={classes.btn__modal__open} onClick={() => openDialog(obj.id)}> Быстрый просмотр </button>
             <Dialog open={isOpen === obj.id} onClose={closeDialog}>
                 <div className={classes.modal__bg}>
                     <DialogPanel className={classes.popup}>
@@ -76,8 +81,8 @@ export function TableMain({ data, addToCart, /*isInCart*/ }) {
             </Dialog>
         </article>
         )}
+    </section>
     </main>
-
 }
 
 
@@ -87,29 +92,29 @@ export function TableCart({ data, delPost }) {
     const fetchData = async () => {
         try {
             const productIds = data.map(item => item.productId);
-            console.log('ObjTable render cart-data',productIds);
-             const products = await
-                    repo(Product)
-                        .find({
-                            where: { id: productIds  }
-                        });
-                        console.log('ObjTable render cart-data',products);
-                        return products
-                       
+            console.log('ObjTable render cart-data', productIds);
+            const products = await
+                repo(Product)
+                    .find({
+                        where: { id: productIds }
+                    });
+            console.log('ObjTable render cart-data', products);
+            return products
+
         } catch (error) {
-              throw error;
+            throw error;
         }
     };
-    const  { data: productData, error } = useSWR('product', fetchData, { revalidateOnFocus: true });
+    const { data: productData, error } = useSWR('product', fetchData, { revalidateOnFocus: true });
     if (error) return <>
-    <ErrorInfo/>
+        <ErrorInfo />
     </>;
     if (!productData) return
     const
         countPrice = productData.reduce((acc, obj) => acc + obj.price, 0),
         discount = Math.round(countPrice * 0.25);
     //переменная для счетчика считать общую сумму  ! 
-    console.debug('ObjTable render cart-data',productData);
+    console.debug('ObjTable render cart-data', productData);
     return <section className={classesCart.product__section}>
         <main className={classesCart.product__main}>
             <section className={classesCart.product}>

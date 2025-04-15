@@ -6,26 +6,29 @@ import { Product } from "./Product";
 @Entity("cartitem", {
     allowApiCrud: true,
     apiPrefilter: () => {
-        
+
         // if (remult.isAllowed(Roles.admin)) return {}; 
         return {
-            userId: remult.user!.id, 
+            userId: remult.user!.id,
         };
-      },
+    },
 })
 export class CartItem {
-@Fields.autoIncrement()
+    @Fields.autoIncrement()
     id = 0;
-@Fields.string({ allowNull: true })
-    userId?: string  
+    
+    @Fields.integer({ allowNull: true })
+    productId = 0;
 
-@Relations.toOne(() => User, { field: "userId" })
+    @Fields.string({ allowNull: true })
+    userId?: string
+
+    @Relations.toOne(() => User, { field: "userId" })
     user?: User
 
-@Fields.integer({ allowNull: true })
-productId = 0 ;
 
- @Relations.toOne(() => User, { field: "userId" })
+
+    @Relations.toOne(() => User, { field: "userId" })
     product?: Product
 
 }
