@@ -8,9 +8,9 @@
     align-items: center;
     width: 100%;
     font-weight: 400;
-    font-size: 17px;
+    font-size: 14px;
     color: black;
-    padding: 12px;
+    padding: 10px;
     text-align: center;
     border: 1px solid black;
     border-radius: 4px;
@@ -87,6 +87,7 @@
 .burger__btn {
     position: relative;
     width: 60px;
+    min-width: 60px;
     height: 60px;
     border: 1px solid #fff;
     

@@ -1,5 +1,3 @@
-
-
 /*Логотип*/
 
 .block__logo {
@@ -15,8 +13,8 @@
 
 
 .icon__logo {
-    width: 100%;
-    height: 100%;
+    width: 60px;
+    height: 60px;
 
 }
 
@@ -146,7 +144,7 @@
     animation: slide-out 1s ease forwards;
 }
 
-.burger__bg__hidden{
+.burger__bg__hidden {
     display: none;
 }
 
@@ -168,8 +166,8 @@
     width: 90%;
 }
 
-.burger__ul__hidden{
-   display: none;
+.burger__ul__hidden {
+    display: none;
 }
 
 .burger__li {
@@ -227,7 +225,7 @@
 }
 
 @media(max-width:600px) {
-    .navigation{
+    .navigation {
         justify-content: space-around;
     }
 }

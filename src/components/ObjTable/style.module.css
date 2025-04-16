@@ -6,13 +6,13 @@
 .container__cards {
     display: grid;
     width: 100%;
-    max-width: 1540px;
+    max-width: 1450px;
     grid-template-columns: repeat(auto-fill, 225px);
     justify-content: center;
     justify-items: center;
     margin: 0 auto;
     column-gap: 40px;
-    row-gap: 20px;
+    row-gap: 15px;
 }
 
 
@@ -34,7 +34,7 @@
 }
 
 .card__top {
-    flex: 0 0 350px;
+    flex: 0 0 250px;
     position: relative;
 }
 
@@ -88,7 +88,7 @@
 .card__price__discount {
     width: 100px;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 18px;
     color: #414141;
     display: flex;
     flex-wrap: wrap-reverse;
@@ -103,9 +103,9 @@
 
 
 .card__price__common {
-    width: 75px;
+    width: 66px;
     font-weight: 400;
-    font-size: 17px;
+    font-size: 15px;
     color: #606060;
     display: flex;
     flex-wrap: wrap-reverse;
@@ -117,7 +117,7 @@
 
     content: "Обычная";
     font-weight: 400;
-    font-size: 13px;
+    font-size: 14px;
     color: #bfbfbf;
 }
 
@@ -126,7 +126,7 @@
     text-decoration: none;
     margin: 10px;
     font-weight: 400;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 1.2;
     color: #414141;
 }
@@ -213,7 +213,7 @@
     font-size: 17px;
     font-weight: 500;
     height: 40px;
-    bottom: 205px;
+    bottom: 190px;
     right: 0;
     left: 0;
     margin-inline: 15px;
@@ -240,11 +240,11 @@
 
 @media(min-width:600px) {
     .card {
-        width: 300px;
+        width: 220px;
 
     }
 
     .container__cards {
-        column-gap: 100px;
+        column-gap: 20px;
     }
 }
