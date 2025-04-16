@@ -39,49 +39,55 @@ export function TableMain({ data, addToCart, /*isInCart*/ }) {
     const closeDialog = () => {
         setIsOpen(null);
     };
-    return <main className={classes.cards}> 
-    <section className={`${classes.container} ${classes.container__cards}`}>
-        {data.map(obj => <article onMouseEnter={() => setVisible(obj.id)} onMouseLeave={() => setVisible(null)} className={classes.card} key={obj.id + Math.random()}>
-            <section className={classes.card__top}>
-                <Link href="#!" className={classes.card__img}>
-                    <img  src={obj.images} alt={obj.title} />
-                </Link>
-                <span className={classes.card__label}>-10%</span>
-            </section>
-            <section className={classes.card__bottom}>
-                <div className={classes.card__prices}>
-                    <span className={`${classes.card__price} ${classes.card__price__discount}`}>1200</span>
-                    <span className={`${classes.card__price} ${classes.card__price__common}`}>{obj.price}</span>
-                </div>
-                <Link href="#!" className={classes.card__title}>{obj.title}</Link>
-            </section>
-            <AddForm /*selectCart={isInCart(obj.id)}*/ addToCart={() => addToCart(obj)} />
-            <button className={classes.btn__modal__open} onClick={() => openDialog(obj.id)}> Быстрый просмотр </button>
-            <Dialog open={isOpen === obj.id} onClose={closeDialog}>
-                <div className={classes.modal__bg}>
-                    <DialogPanel className={classes.popup}>
-                        <FaTimes className={classes.modal__btn__close} onClick={closeDialog} />
-                        <section className={classes.modal__block__section} >
-                            <div className={classes.modal__block__img}><img src={obj.images} alt={obj.title} /></div>
-                            <div className={classes.modal__block__content}>
-                                <DialogTitle className={classes.modal__title}>
-                                    {obj.title}
-                                </DialogTitle>
-                                <div>
-                                    <p className={classes.modal__product}><span className={classes.modal__product__params}>{parameter.gender}</span></p>
+    return <main className={classes.cards}>
+        <section className={`${classes.container} ${classes.container__cards}`}>
+            {data.map(obj => {
+       const
+        discount = Math.round(obj.price * 0.10),
+        newPrice = Math.round(obj.price - discount),
+        discountPercentage = Math.floor(((obj.price - newPrice) / obj.price) * 100);
+                return  <article onMouseEnter={() => setVisible(obj.id)} onMouseLeave={() => setVisible(null)} className={classes.card} key={obj.id + Math.random()}>
+                <section className={classes.card__top}>
+                    <Link href="#!" className={classes.card__img}>
+                        <img src={obj.images} alt={obj.title} />
+                    </Link>
+                    <span className={classes.card__label}>-{discountPercentage}%</span>
+                </section>
+                <section className={classes.card__bottom}>
+                    <div className={classes.card__prices}>
+                        <span className={`${classes.card__price} ${classes.card__price__discount}`}>{newPrice}</span>
+                        <span className={`${classes.card__price} ${classes.card__price__common}`}>{obj.price}</span>
+                    </div>
+                    <Link href="#!" className={classes.card__title}>{obj.title}</Link>
+                </section>
+                <AddForm /*selectCart={isInCart(obj.id)}*/ addToCart={() => addToCart(obj)} />
+                <button className={classes.btn__modal__open} onClick={() => openDialog(obj.id)}> Быстрый просмотр </button>
+                <Dialog open={isOpen === obj.id} onClose={closeDialog}>
+                    <div className={classes.modal__bg}>
+                        <DialogPanel className={classes.popup}>
+                            <FaTimes className={classes.modal__btn__close} onClick={closeDialog} />
+                            <section className={classes.modal__block__section} >
+                                <div className={classes.modal__block__img}><img src={obj.images} alt={obj.title} /></div>
+                                <div className={classes.modal__block__content}>
+                                    <DialogTitle className={classes.modal__title}>
+                                        {obj.title}
+                                    </DialogTitle>
+                                    <div>
+                                        <p className={classes.modal__product}><span className={classes.modal__product__params}>{parameter.gender}</span></p>
+                                    </div>
+                                    <p className={classes.modal__product__price}><span className={classes.modal__product__value}>{obj.price}₽</span></p>
+                                    <div>
+                                        <p className={classes.modal__product__price}>Цвет:<span className={classes.modal__product__color}>{parameter.color}</span></p>
+                                    </div>
                                 </div>
-                                <p className={classes.modal__product__price}><span className={classes.modal__product__value}>{obj.price}₽</span></p>
-                                <div>
-                                    <p className={classes.modal__product__price}>Цвет:<span className={classes.modal__product__color}>{parameter.color}</span></p>
-                                </div>
-                            </div>
-                        </section>
-                    </DialogPanel>
-                </div>
-            </Dialog>
-        </article>
-        )}
-    </section>
+                            </section>
+                        </DialogPanel>
+                    </div>
+                </Dialog>
+            </article>
+            }
+            )}
+        </section>
     </main>
 }
 
