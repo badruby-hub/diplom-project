@@ -30,7 +30,7 @@
 .navigation {
     display: flex;
     align-items: center;
-    margin-inline: 1rem;
+    margin-inline: 5rem;
 }
 
 .block__icon {
@@ -227,6 +227,6 @@
 @media(max-width:600px) {
     .navigation {
         justify-content: space-around;
-        margin-inline: 5rem;
+        margin-inline: 1rem;
     }
 }
