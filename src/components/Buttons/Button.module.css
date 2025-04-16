@@ -128,7 +128,12 @@
     transform: rotate(45deg);
 }
 
-
+@media(max-width: 530px){
+     .add__card__btn{
+        font-weight: 700;
+        font-size: 9px;
+     }
+}
 @media(min-width: 600px){
     .burger__btn{
         margin-inline: 4em auto;

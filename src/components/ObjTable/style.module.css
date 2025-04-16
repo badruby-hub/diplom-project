@@ -236,7 +236,35 @@
 }
 
 
+@media(max-width:530px){
+    .container__cards{
+        grid-template-columns: repeat(auto-fill, 150px);
+    }
 
+    .card{
+        width: 150px;
+    }
+
+    .card__top{
+         flex: 0 0 200px;
+    }
+
+    .card__label{
+        font-size: 12px;
+    }
+    .card__price__discount{
+            font-size: 15px;
+    }
+    .card__price__discount::before{
+        font-size: 12px;
+    }
+    .card__price__common, .card__price__common::before{
+        font-size: 12px;
+    }
+    .card__title{
+        font-size: 15px;
+    }
+}
 
 @media(min-width:600px) {
     .card {
