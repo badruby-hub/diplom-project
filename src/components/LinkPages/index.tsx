@@ -3,7 +3,7 @@ import Link from "next/link";
 import { FaShoppingCart, FaUserAlt, FaMapMarkerAlt, FaNeos } from "react-icons/fa";
 import { SearchForm } from "../SearchForm/Search";
 import classes from "./Link.module.css"
-import { $filter, $isOpen, $search } from "../../../store/store-data";
+import { $filter, $isOpen, $search, $selectedCategoryId } from "../../../store/store-data";
 import { BurgerBtn } from "../Buttons/Buttons";
 import { useStore } from "@nanostores/react";
 import { useEffect, useState } from "react";
@@ -28,6 +28,7 @@ export default function PagesWebsite() {
         logoClickSearchClear = () => {
             $search.set('');
             $filter.set('');
+            $selectedCategoryId.set(null);
         };
     const isClose = () => {
         $isOpen.set(false);
@@ -99,13 +100,13 @@ export function BurgerMenu() {
     }, []);
 
     const
-    burgerMenuLink = [
-        { href: '/address', title: "Наш адрес" },
-        { href: isAuthenticated ? '/authorization' : '/api/auth/signin', title: <span>{isAuthenticated ? 'Данные' : 'Войти'}</span> },
-        { href: '/cart', title: "Корзина" },
-    ];
+        burgerMenuLink = [
+            { href: '/address', title: "Наш адрес" },
+            { href: isAuthenticated ? '/authorization' : '/api/auth/signin', title: <span>{isAuthenticated ? 'Данные' : 'Войти'}</span> },
+            { href: '/cart', title: "Корзина" },
+        ];
 
-   
+
     const isClose = () => {
         const toggle = $isOpen.get()
         $isOpen.set(!toggle);
@@ -127,7 +128,12 @@ export function BurgerMenu() {
                     </li>
                 )}
                 {data.map(obj => (
-                    <li className={classes.burger__li} key={obj.id} onClick={isClose}>
+                    <li className={classes.burger__li} key={obj.id} onClick={() => {
+                        $selectedCategoryId.set(obj.id);
+                        $search.set('');
+                        $filter.set('');
+                        isClose();
+                    }}>
                         {obj.category}
                     </li>
                 ))}

@@ -17,3 +17,8 @@ export const $filter= atom<string>('');
  */
 
 export const $isOpen = atom<boolean>(false);
+
+
+/*выделение id категории */
+
+export const $selectedCategoryId = atom<number | null>(null);

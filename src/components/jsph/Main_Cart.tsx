@@ -7,7 +7,7 @@ import { TableMain, TableCart } from "../ObjTable/Obj-table_cart_main";
 import { EmptyCart, EmptyMain } from "../Error/index";
 import { useStore } from "@nanostores/react";
 import { repo } from "remult";
-import { $filter } from "../../../store/store-data";
+import { $filter, $selectedCategoryId } from "../../../store/store-data";
 import { Loader } from "@/components/Spinner";
 import { useSession } from "next-auth/react";
 import { CartItem } from "../../../shared/entities/CartItem";
@@ -20,7 +20,8 @@ const fetchProduct = async () => {
 
 export function JsphMain() {
   const
-    searchFilter: string = useStore($filter);
+    searchFilter: string = useStore($filter),
+    selectedCategoryId: number | null = useStore($selectedCategoryId) ;
 
 
   const
@@ -35,7 +36,9 @@ export function JsphMain() {
     return cartData?.some(item => item.productId === productId)
   }
   const
-    filteredData = data ? data.filter(row => {
+    filteredData = data 
+    ? data.filter(row => {
+      if(selectedCategoryId && row.CategoryId !== selectedCategoryId) return false
       if (!searchFilter.length) return true;
       for (const key in row) {
         const keyRow = row[key as keyof Product];
@@ -50,8 +53,6 @@ export function JsphMain() {
         toast.error("Пожалуйста, авторизуйтесь, чтобы добавить товар в корзину.");
         return;
       }
-      console.log("IDUser ", session?.user?.id);
-      console.log("add", obj);
       const cart = {
         productId: obj.id,
         userId: session?.user!.id,
