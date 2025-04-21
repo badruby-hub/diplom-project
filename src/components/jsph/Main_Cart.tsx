@@ -66,10 +66,10 @@ export function JsphMain() {
           await repo(CartItem).insert(cart);
           toast.success("Товар добавлен в корзину");
           optimisticData = await fetchProduct();
-          await mutate(fetchProduct(),{
-              optimisticData,
-              revalidate: true
-            });
+          await mutate(fetchProduct(), {
+            optimisticData,
+            revalidate: true
+          });
           console.log("muteta", optimisticData);
         } catch {
           toast.error("Ошибка при добавлении товара в корзину");
@@ -146,13 +146,12 @@ export function JsphCart() {
   return <>
     <div
       className={classes.loading}>
-      {isLoading && <Loader />}
-      {isValidating && "👁"}
+      {(isLoading || isValidating) && <Loader />}
       {error && `❌ ${error.toString()}`}
     </div>
     {data && data.length > 0 && !isLoading
       ? <TableCart data={data} delPost={delPost} />
-      : !isLoading && <EmptyCart />
+      : <EmptyCart />
     }
   </>
 }
