@@ -1,6 +1,7 @@
 import { Entity, Fields, Relations } from "remult";
 import { ProductParams } from "./ProductParams";
 import { Category } from "./Category";
+import { SizeProduct } from "./SizeProduct";
 @Entity("product", {
     allowApiCrud: true,
 })
@@ -23,6 +24,10 @@ export class Product {
 
     @Relations.toMany(() => ProductParams)
     ProductParams?: ProductParams[]
+
+    
+    @Relations.toMany(() => SizeProduct)
+    SizeProduct?: SizeProduct[]
 
     @Relations.toOne(() => Category, { field: "CategoryId" })
     Category?: Category;

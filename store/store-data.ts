@@ -1,7 +1,19 @@
 import {atom} from "nanostores"
 
-export const $search= atom('');
+/*
+ Текущее значение строки поиска 
+ */
 
-export const $filter= atom('');
+export const $search= atom<string>('');
 
-export const $isOpen = atom(false);
+/*
+ Активный фильтр используется для отображения продуктов 
+ */
+
+export const $filter= atom<string>('');
+
+/*
+Статус Бургер меню
+ */
+
+export const $isOpen = atom<boolean>(false);

@@ -6,11 +6,10 @@ import toast from "react-hot-toast";
 import { TableMain, TableCart } from "../ObjTable/Obj-table_cart_main";
 import { EmptyCart, EmptyMain } from "../Error/index";
 import { useStore } from "@nanostores/react";
-import { remult, repo } from "remult";
-import { $filter, $search } from "../../../store/store-data";
+import { repo } from "remult";
+import { $filter } from "../../../store/store-data";
 import { Loader } from "@/components/Spinner";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
 import { CartItem } from "../../../shared/entities/CartItem";
 
 
@@ -67,7 +66,10 @@ export function JsphMain() {
           await repo(CartItem).insert(cart);
           toast.success("Товар добавлен в корзину");
           optimisticData = await fetchProduct();
-          await mutate(fetchProduct, { optimisticData, revalidate: true });
+          await mutate(fetchProduct(),{
+              optimisticData,
+              revalidate: true
+            });
           console.log("muteta", optimisticData);
         } catch {
           toast.error("Ошибка при добавлении товара в корзину");
@@ -85,8 +87,7 @@ export function JsphMain() {
   return <>
     <div
       className={classes.loading}>
-      {isLoading && <Loader />}
-      {isValidating && "👁"}
+      {(isLoading || isValidating) && <Loader />}
       {error && `❌ ${error.toString()}`}
     </div>
     {searchFilter.length > 0 && filteredData.length === 0 ?
@@ -100,43 +101,46 @@ export function JsphMain() {
 //Корзина 
 
 const fetchCart = async () => {
-    try {
-      return await repo(CartItem).find({
-        include: {
-          product: true 
-        }
-      })
-    } catch (error) {
-      toast.error('Авторизуйтесь чтобы увидеть свою корзину ')
-      throw error;
-  }
+  return await repo(CartItem).find({
+    include: {
+      product: true
+    }
+  })
 };
 
 
 
 export function JsphCart() {
+  const { data: session, status } = useSession();
 
+  if (status === "loading") {
+    return <Loader />
+  }
+  if (!session) {
+    toast.error('Авторизуйтесь чтобы увидеть  корзину ')
+    return <EmptyCart />
+  }
   const
     { data, error, isLoading, isValidating, mutate } = useSWR<CartItem[]>('cartItem', fetchCart, { revalidateOnFocus: true });
   let
     optimisticData;
-    const delPost = async (productId: number) => {
-          console.log("Удаление товара с id:", productId);
-          if (data) {
-            try {
-              await repo(CartItem).delete(productId);
-              optimisticData = data.filter(el => el.productId !== (productId));
-              toast.success("Товар удален")
-              await mutate(fetchCart, { optimisticData, revalidate: true });
-            } catch (error: any) {
-              toast.error("Ошибка при удалении товара")
-              console.log(error)
-            }
-          }
-          if (!data) {
-            throw new Error();
-          }
-        }
+  const delPost = async (productId: number) => {
+    console.log("Удаление товара с id:", productId);
+    if (data) {
+      try {
+        await repo(CartItem).delete(productId);
+        optimisticData = data.filter(el => el.productId !== (productId));
+        toast.success("Товар удален")
+        await mutate(fetchCart, { optimisticData, revalidate: true });
+      } catch (error: any) {
+        toast.error("Ошибка при удалении товара")
+        console.log(error)
+      }
+    }
+    if (!data) {
+      throw new Error();
+    }
+  }
 
 
   return <>

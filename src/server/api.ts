@@ -8,6 +8,7 @@ import { Size } from "../../shared/entities/Size";
 import { Cart } from "../../shared/entities/Cart";
 import { Category } from "../../shared/entities/Category";
 import { CartItem } from "../../shared/entities/CartItem";
+import { SizeProduct } from "../../shared/entities/SizeProduct";
   
 export const api = remultNextApp({
   getUser: getUserFromRequest,
@@ -18,5 +19,5 @@ export const api = remultNextApp({
     connectionString: process.env["DATABASE_URL"]    
   }),
   admin: true,
-  entities: [User, Product,ProductParams,Size,Cart,Category, CartItem],
+  entities: [User, Product,ProductParams,Size,Cart,Category, CartItem, SizeProduct],
 });

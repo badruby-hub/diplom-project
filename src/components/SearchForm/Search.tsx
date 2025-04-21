@@ -57,13 +57,6 @@ export function SearchForm() {
                 setIsOpen(!isOpen);
                 setSelectedIndex(-1);
             }
-            if(event.key === "Enter"){
-                event.preventDefault();
-                $search.set(search);
-                $filter.set(search);
-                setIsOpen(false);
-                setSelectedIndex(-1);
-            }
             if (event.key === 'Backspace') {
                 setIsOpen(true);
             }

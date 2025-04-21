@@ -78,17 +78,34 @@ export default function PagesWebsite() {
 
 
 
-const
-    burgerMenuLink = [
-        { href: '/address', title: "Наш адрес" },
-        { href: '/api/auth/signin', title: "Войти" },
-        { href: '/cart', title: "Корзина" },
-    ];
-
 
 export function BurgerMenu() {
     const [data, setData] = useState<Category[]>([]);
+    const [status, setStatus] = useState<TileStatus>("Loading");
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const isOpen = useStore($isOpen);
+
+    useEffect(() => {
+        remult
+            .initUser()
+            .then(user => {
+                setIsAuthenticated(!!user);
+                setStatus("Success")
+            })
+            .catch((e) => {
+                setIsAuthenticated(false);
+                setStatus("Error");
+            })
+    }, []);
+
+    const
+    burgerMenuLink = [
+        { href: '/address', title: "Наш адрес" },
+        { href: isAuthenticated ? '/authorization' : '/api/auth/signin', title: <span>{isAuthenticated ? 'Данные' : 'Войти'}</span> },
+        { href: '/cart', title: "Корзина" },
+    ];
+
+   
     const isClose = () => {
         const toggle = $isOpen.get()
         $isOpen.set(!toggle);

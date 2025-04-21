@@ -7,21 +7,24 @@ import { Size } from "./Size";
 })
 export class ProductParams {
     @Fields.autoIncrement()
-    id = 0;
+    id!: 0;
     @Fields.string()
     article!: string;
     @Fields.string()
     gender?: string;
     @Fields.string()
     color!: string;
+    @Fields.string()
+    composition!: string;
     @Fields.integer()
     ProductId?: number;
-
+    @Fields.integer()
+    sizeId?: number
     @Relations.toOne(() => Product, { field: "ProductId" })
     Product?: Product ;
     
-    @Relations.toMany(() => Size)
-    Size?: Size[]
+    @Relations.toOne(() => Size, {field: "sizeId"})
+    Size?: Size;
 
    
 

@@ -1,66 +1,149 @@
-.product__section {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    /* margin: 2rem 1.5rem 0 5%; */
+.container {
+    width: 100%;
+    margin: 0 auto;
 }
 
-.product__article {
-    position: relative;
-    cursor: pointer;
-    max-width: 250px;
-    background-color: #ececec;
-    margin: 20px;
-    padding: 20px; 
-   
-
+.container__cards {
+    display: grid;
+    width: 100%;
+    max-width: 1450px;
+    grid-template-columns: repeat(auto-fill, 225px);
+    justify-content: center;
+    justify-items: center;
+    margin: 0 auto;
+    column-gap: 40px;
+    row-gap: 15px;
 }
 
-.product__image {
-     width: 100%;
-    /*
-     margin-bottom: 1rem;
-    border-radius: 10px;
-    box-shadow: 0px 0px 16px 4px rgba(34, 60, 80, 0.2); */
-}
 
-.product__title {
-    font-size: 18px;
-    /* 
-    margin-bottom: 1rem;
-    height: 7vh; */
-}
-
-.product__caption {
+.card {
+    width: 240px;
+    min-height: 350px;
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
+    border-radius: 10px;
+    position: relative;
+    transition: 0.2s;
+    margin: 10px;
+
 }
 
-.figure {
-    margin: 0;
+.card:hover {
+    box-shadow: 4px 8px 16px rgba(1, 1, 1, 0.2);
 }
 
-.product__price {
+.card__top {
+    flex: 0 0 290px;
+    position: relative;
+}
+
+.card__img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+
+}
+
+.card__img>img {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+.card__label {
+    position: absolute;
+    top: 15px;
+    left: 10px;
+    padding: 4px 8px;
+    background-color: gray;
+    color: white;
+    border-radius: 5px;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.card__bottom {
+    flex: 1 0 auto;
+}
+
+.card__prices {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+}
+
+.card__price {
+    width: 50%;
+}
+
+.card__price::after {
+    content: "\20BD";
+    margin-left: 4px;
+}
+
+.card__price__discount {
+    width: 90px;
+    font-weight: 700;
     font-size: 18px;
-    margin: 0;
+    color: #414141;
+    display: flex;
+    flex-wrap: wrap-reverse;
+}
+
+.card__price__discount::before {
+    content: "Со скидкой";
+    font-weight: 400;
+    font-size: 15px;
+    color: #bfbfbf;
+}
+
+
+.card__price__common {
+    width: 66px;
+    font-weight: 400;
+    font-size: 15px;
+    color: #606060;
+    display: flex;
+    flex-wrap: wrap-reverse;
+    justify-content: flex-end;
 
 }
 
-.strong {
-    margin-right: .3em;
+
+.card__price__common::before {
+
+    content: "Обычная";
+    font-weight: 400;
+    font-size: 14px;
+    color: #bfbfbf;
+}
+
+.card__title {
+    display: block;
+    text-decoration: none;
+    margin: 10px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.2;
+    color: #414141;
 }
 
 /*МОДАЛЬНОЕ ОКНО*/
 
 .modal__bg {
+    display: none;
+    align-items: center;
+    justify-content: center;
     position: fixed;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
     background: rgba(0, 0, 0, 0.3);
     z-index: 999;
 }
@@ -71,8 +154,8 @@
     align-items: flex-end;
     position: relative;
     background: gray;
-    width: 1100px;
-    height: 750px;
+    width: 1000px;
+    height: 670px;
     border-radius: 20px;
 }
 
@@ -80,11 +163,7 @@
     display: flex;
     width: 100%;
     height: 100%;
-    
-
-
 }
-
 
 .modal__block__img img {
     width: 100%;
@@ -102,8 +181,18 @@
     flex-direction: column;
     background-color: white;
     width: 48%;
-    padding: 1em ;
+    padding: 1em;
     border-radius: 0 20px 20px 0;
+}
+
+.modal__block__content > h2{
+ margin-bottom: 0;
+}
+
+.modal__block__price {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
 }
 
 .modal__btn__close {
@@ -112,35 +201,122 @@
     right: 13px;
     max-width: 30px;
     font-size: 25px;
-    color:gray;
+    color: gray;
 }
 
-.modal__btn__close:hover{
+.modal__btn__close:hover {
     color: black;
 }
 
-.modal__title{
-    max-width: 520px;
-}
-
-.modal__product__value{
-    font-size: 25px;
-    font-weight:800;
-}
-
-.btn__modal__open{
+.btn__modal__open {
+    display: none;
     cursor: pointer;
     position: absolute;
     font-size: 17px;
     font-weight: 500;
     height: 40px;
-    bottom: 190px;
-    right: 30px;
-    left: 30px;
+    bottom: 205px;
+    right: 0;
+    left: 0;
+    margin-inline: 15px;
     border-radius: 10px;
     border: none;
-    background: rgba(235, 235, 235, 0.7);
+    background: rgba(250, 250, 250, 0.7);
 }
-.btn__modal__open:hover{
+
+.btn__modal__open:hover {
     background: rgb(255, 255, 255);
+}
+
+.modal__title {
+    max-width: 520px;
+}
+
+.modal__product__value {
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.modal__product__value__common {
+    color: #606060;
+    font-size: 20px;
+    text-decoration: line-through;
+}
+
+.modal__product__article{
+    margin-top: 10px;
+    
+}
+
+.modal__product__article,
+.modal__product__gender,
+.modal__product__color {
+    color: #606060;
+}
+
+.article,
+.gender,
+.color {
+    text-decoration: none;
+    color: #000000;
+}
+
+.article:hover{
+    color: red;
+}
+@media(min-width:1100px) {
+    .card:hover .btn__modal__open {
+        display: block;
+    }
+
+    .modal__bg {
+        display: flex;
+    }
+}
+
+
+@media(max-width:530px) {
+    .container__cards {
+        grid-template-columns: repeat(auto-fill, 150px);
+    }
+
+    .card {
+        width: 150px;
+    }
+
+    .card__top {
+        flex: 0 0 200px;
+    }
+
+    .card__label {
+        font-size: 12px;
+    }
+
+    .card__price__discount {
+        font-size: 15px;
+    }
+
+    .card__price__discount::before {
+        font-size: 12px;
+    }
+
+    .card__price__common,
+    .card__price__common::before {
+        font-size: 12px;
+    }
+
+    .card__title {
+        font-size: 15px;
+    }
+}
+
+@media(min-width:600px) {
+    .card {
+        width: 220px;
+
+    }
+
+    .container__cards {
+        column-gap: 20px;
+    }
 }
