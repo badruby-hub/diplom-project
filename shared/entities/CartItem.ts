@@ -28,7 +28,7 @@ export class CartItem {
 
 
 
-    @Relations.toOne(() => User, { field: "userId" })
+    @Relations.toOne(() => Product, { field: "productId" })
     product?: Product
 
 }
