@@ -13,26 +13,27 @@ import { useSession } from "next-auth/react";
 import { CartItem } from "../../../shared/entities/CartItem";
 
 
-
-
-
+const fetchProduct = async () => {
+  return await repo(Product).find({});
+};
 
 
 export function JsphMain() {
   const
     searchFilter: string = useStore($filter);
 
-  const fetchProduct = async () => {
-    return await repo(Product).find({});
-  };
 
   const
     { data: session } = useSession();
 
   const
-    { data, error, isLoading, isValidating, mutate } = useSWR<Product[]>('products', fetchProduct, { revalidateOnFocus: false });
-  let
-    optimisticData;
+    { data, error, isLoading, isValidating } = useSWR<Product[]>('products', fetchProduct, { revalidateOnFocus: false });
+  const
+    { data: cartData, mutate: mutateCart } = useSWR<CartItem[]>("cartItem", fetchCart, { revalidateOnFocus: true });
+
+  const isInCart = (productId: number) => {
+    return cartData?.some(item => item.productId === productId)
+  }
   const
     filteredData = data ? data.filter(row => {
       if (!searchFilter.length) return true;
@@ -42,11 +43,6 @@ export function JsphMain() {
       }
       return false;
     }) : [];
-
-
-
-
-
 
   const
     addToCart = async (obj: any) => {
@@ -65,24 +61,14 @@ export function JsphMain() {
         try {
           await repo(CartItem).insert(cart);
           toast.success("Товар добавлен в корзину");
-          optimisticData = await fetchProduct();
-          await mutate(fetchProduct(), {
-            optimisticData,
-            revalidate: true
-          });
-          console.log("muteta", optimisticData);
-        } catch {
+          await mutateCart();
+        } catch (error) {
           toast.error("Ошибка при добавлении товара в корзину");
           console.error(error);
         }
 
       }
     }
-
-
-
-  console.log("JsphMain", data);
-
 
   return <>
     <div
@@ -93,7 +79,7 @@ export function JsphMain() {
     {searchFilter.length > 0 && filteredData.length === 0 ?
       <EmptyMain search={searchFilter} />
       :
-      <TableMain /*isInCart={isInCart}*/ addToCart={addToCart} data={filteredData} />
+      <TableMain isInCart={isInCart} addToCart={addToCart} data={filteredData} />
     }
   </>
 };
@@ -125,7 +111,6 @@ export function JsphCart() {
   let
     optimisticData;
   const delPost = async (productId: number) => {
-    console.log("Удаление товара с id:", productId);
     if (data) {
       try {
         await repo(CartItem).delete(productId);

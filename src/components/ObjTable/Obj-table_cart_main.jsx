@@ -11,6 +11,7 @@ import useSWR from "swr";
 import { ErrorInfo } from "../Error";
 
 
+
 const fetchParams = async () => {
     try {
       return await repo(ProductParams).find({
@@ -21,7 +22,7 @@ const fetchParams = async () => {
 };
 
 
-export function TableMain({ data, addToCart, /*isInCart*/ }) {
+export function TableMain({ data, addToCart, isInCart }) {
     const [isOpen, setIsOpen] = useState(null);
     const [visible, setVisible] = useState(null);
     const [paramId, setParamId] = useState(null);
@@ -63,7 +64,7 @@ export function TableMain({ data, addToCart, /*isInCart*/ }) {
                         </div>
                         <Link href="#!" className={classes.card__title}>{obj.title}</Link>
                     </section>
-                    <AddForm /*selectCart={isInCart(obj.id)}*/ addToCart={() => addToCart(obj)} />
+                    <AddForm selectCart={isInCart?.(obj.id)} addToCart={() => addToCart(obj)} />
                     <button className={classes.btn__modal__open} onClick={() => openDialog(obj.id)}> Быстрый просмотр </button>
                     <Dialog open={isOpen === obj.id} onClose={closeDialog}>
                         <div className={classes.modal__bg}>

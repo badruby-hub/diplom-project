@@ -14,11 +14,17 @@
     text-align: center;
     border: 1px solid black;
     border-radius: 4px;
+    cursor: pointer;
 }
 
 .add__card__btn:hover {
     background-color: gray;
     color: white;
+}
+
+.add__card__btn:active{
+    background-color: #a1a1a169;
+    color: #7c7c7c;
 }
 
 .del__cart__button {

@@ -3,7 +3,6 @@ import classes from "./Button.module.css"
 import { FaShoppingCart, FaRegTrashAlt, FaSearch, FaTimes } from "react-icons/fa";
 import { $isOpen } from "../../../store/store-data";
 import { useStore } from "@nanostores/react";
-import { useEffect } from "react";
 
 
 export function BtnInSearch({ clearForm, btnSearch }) {
