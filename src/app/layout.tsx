@@ -2,10 +2,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import PagesWebsite, { BurgerMenu } from "@/components/LinkPages"
 import { Toaster } from "react-hot-toast";
 import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
+import Header,{ BurgerMenu }  from "@/components/Header";
 
 
 const geistSans = localFont({
@@ -34,12 +34,15 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
       <Toaster/>
         <header>
-        <PagesWebsite/>
+        <Header/>
         </header>
         <SessionProvider session={session}>
         <BurgerMenu/>
         {children}
         </SessionProvider>
+        <footer>
+          
+        </footer>
       </body>
     </html>
   );

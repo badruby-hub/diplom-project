@@ -17,7 +17,7 @@ import Tile, { type TileStatus } from "../../demo/Tile";
 
 
 
-export default function PagesWebsite() {
+export default function Header() {
     const [data, setData] = useState<Product[]>([]);
     const [status, setStatus] = useState<TileStatus>("Loading");
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);

@@ -1,43 +1,52 @@
 import classes from "./TableMain.module.css";
 import classesCart from "./TableCart.module.css";
+import classesProfile from "./TableProfile.module.css";
 import { AddForm, DelPost, OrderBuy } from "../Buttons/Buttons";
 import Link from "next/link";
-import { useState } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { FaTimes } from "react-icons/fa";
 import { repo } from "remult";
-import { ProductParams } from "../../../shared/entities/ProductParams";
 import useSWR from "swr";
-import { ErrorInfo } from "../Error";
+import { useState, useEffect } from "react";
+import { remult } from "remult";
+import { Loader } from "../Spinner";
+
+// import { ErrorInfo } from "../Error";
+// import { SizeProduct } from "../../../shared/entities/SizeProduct";
 
 
 
-const fetchParams = async () => {
-    try {
-      return await repo(ProductParams).find({
-      })
-    } catch (error) {
-      throw error;
-  }
-};
+// const fetchSize = async () => {
+//     try {
+//         return await repo(SizeProduct).find({
+//             include: {
+//                Product:{
+//                    include:{
+//                     SizeName:true
+//                    }
+//                }
+//             }
+            
+//         })
+//     } catch (error) {
+//         throw error;
+//     }
+// };
 
 
 export function TableMain({ data, addToCart, isInCart }) {
+    // const
+        // { data : sizeProduct, error } = useSWR("sizeProduct", fetchSize);
+    //   if(error)return <>{JSON.stringify(error)}</>
+    //   if(!sizeProduct) return <>Loading...</>
+    //   console.log("Size",sizeProduct?.sizeName);
     const [isOpen, setIsOpen] = useState(null);
     const [visible, setVisible] = useState(null);
     const [paramId, setParamId] = useState(null);
-    // const [sizeId, setSizeId] = useState();
-    const { data: parameter,error } = useSWR('productParams', fetchParams);
-        if (error) return  <ErrorInfo />
-        if (!parameter) return
     const openDialog = async (id) => {
-        const productParams = parameter.find(param => param.id === id);
-        // const sizes = productParams.Size;
+        // const productParams = dada.find(param => param.id === id);
         setIsOpen(id);
-        setParamId(productParams);
-        // setSizeId(sizes);
-        console.log('ProductParams',productParams);
-        // console.log('ProductParams size',  );
+
     };
 
     const closeDialog = () => {
@@ -76,16 +85,16 @@ export function TableMain({ data, addToCart, isInCart }) {
                                         <DialogTitle className={classes.modal__title}>
                                             {obj.title}
                                         </DialogTitle>
-                                        <p className={classes.modal__product__article}>Арт: <Link className={classes.article} href={"#!"}>{paramId?.article}</Link></p>
+                                        <p className={classes.modal__product__article}>Арт: <Link className={classes.article} href={"#!"}>{obj?.article}</Link></p>
                                         <div className={classes.modal__block__price}>
                                             <p className={`${classes.modal__price__discount} ${classes.modal__product__price}`}><span className={classes.modal__product__value}>{newPrice}₽</span></p>
                                             <p className={classes.modal__price__common}><span className={classes.modal__product__value__common}>{obj.price}₽</span></p>
                                         </div>
-                                        <p className={classes.modal__product__gender}>Пол:<span className={classes.gender}> {paramId?.gender}</span></p>
-                                        <p className={classes.modal__product__color}>Цвет: <span className={classes.color}>{paramId?.color}</span></p>
-                                       <ul>
-                                          <li><button>{paramId?.sizeId}</button></li>
-                                       </ul>
+                                        <p className={classes.modal__product__gender}>Пол:<span className={classes.gender}> {obj?.gender}</span></p>
+                                        <p className={classes.modal__product__color}>Цвет: <span className={classes.color}>{obj?.color}</span></p>
+                                        <ul>
+                                            <li><button>{obj?.SizeProduct?.SizeName}</button></li>
+                                        </ul>
                                     </div>
                                 </section>
                             </DialogPanel>
@@ -103,10 +112,10 @@ export function TableMain({ data, addToCart, isInCart }) {
 
 export function TableCart({ data, delPost }) {
 
-   
+
     const
-    countPrice = data.reduce((acc, {product}) => acc + product?.price, 0),
-    discount = Math.round(countPrice * 0.25);
+        countPrice = data.reduce((acc, { product }) => acc + product?.price, 0),
+        discount = Math.round(countPrice * 0.25);
     //переменная для счетчика считать общую сумму  ! 
     return <section className={classesCart.product__section}>
         <main className={classesCart.product__main}>
@@ -127,8 +136,8 @@ export function TableCart({ data, delPost }) {
                 )}
             </section>
             <aside className={classesCart.cart__delivery} >
-                <h2>Способ доставки</h2>
-                <p>для выбора способа доставки вам нужно {<Link className={classesCart.link__url} href={"/authorization"}>подтвердить аккаунт</Link>}</p>
+                <h2> Доставка в пункт назначения </h2>
+                <p>{<Link className={classesCart.link__url} href={'/authorization'}>Войти или зарегестрироваться,</Link>} чтобы выбрать доставку </p>
             </aside>
             <section>
                 <aside className={classesCart.cart__pay}>
@@ -161,7 +170,80 @@ export function TableCart({ data, delPost }) {
 }
 
 export function TableProfile() {
-    return <>
-        <h1>данные пользователя </h1>
-    </>
+    const [status, setStatus] = useState("Loading");
+      const [error, setError] = useState();
+      useEffect(() => {
+        remult
+          .initUser()
+          .then(() => setStatus("Success"))
+          .catch((e) => {
+            setStatus("Error");
+            if (e.message.includes("the server configuration")) {
+              setError(
+                <>
+                  Make sure to set the <code>AUTH_SECRET</code> in the{" "}
+                  <code>.env</code> file. <br />
+                  Read more at{" "}
+                  <a href="https://errors.authjs.dev#missingsecret">auth.js docs</a>
+                  .
+                  <br />
+                  Please check the server terminal console for more information.
+                </>,
+              );
+            }
+          });
+      }, []);
+
+      if (status === "Loading") {
+        return <Loader/>
+
+
+      } else if (status === "Error") {
+        return <p>{error}</p>
+
+
+      } else if (remult.authenticated()) {
+        return <main>
+        <section className={classesProfile.container__profile}>
+           <section className={classesProfile.block__name}>
+               <img src="аватар.png" alt="Аватар" className={classesProfile.avatar__img}/>
+               <p>{remult.user?.name}</p>          
+           </section>
+           <section className={classesProfile.block__sale}>
+            <div>скидка</div>
+            <div>Общая сумма покупок</div>
+            </section>
+           <section  className={classesProfile.block__payment} >
+              <h3>Финансы</h3>
+             <button>Способ оплаты</button>
+             <button>Реквизиты</button>
+           </section>
+           <section>
+            <h3>Управление</h3>
+            <button  className={classesProfile.block__settings}>Настройки</button>
+            <button  className={classesProfile.block__settings}>Ваши устройства</button>
+           </section>
+        </section>
+        <section className={classesProfile.container__content} >
+                 <section className={classesProfile.block__wallet}>
+                 <h3>Кошелек</h3>
+                 <button>пополнить</button>
+                 </section>
+                 <section className={classesProfile.block__favorite}>
+                    <h3>Избранное</h3>
+                    <p>Товаров</p>
+                 </section>
+                 <section className={classesProfile.block__purchases}>
+                      <h3>Покупки</h3>
+                      <p>смотреть</p>
+                 </section>
+                 <section className={classesProfile.block__service}>
+                          <h3>Сервис и помощь</h3>
+                          <button>Написать в поддержку</button>
+                          <button>Вернуть товар</button>
+                          <button>Вопросы и ответы</button>
+                 </section>
+        </section>
+        </main>
+      } 
 }

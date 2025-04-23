@@ -1,17 +1,18 @@
 import { Entity, Fields, Relations } from "remult";
 import { SizeProduct } from "./SizeProduct";
-import { ProductParams } from "./ProductParams";
+// import { ProductParams } from "./ProductParams";
 
 
-@Entity("size", {
+@Entity("sizeName", {
     allowApiCrud: true,
 })
-export class Size {
+export class SizeName {
     @Fields.autoIncrement()
     id!: 0;
+
     @Fields.string()
     size!: string;
 
-    @Relations.toMany(() => ProductParams)
-    ProductParams?: ProductParams[]
+    @Relations.toMany(() => SizeProduct, 'sizeId')
+    sizeProduct?: SizeProduct[]
 }

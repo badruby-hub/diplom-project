@@ -4,7 +4,7 @@ import useSWR from "swr";
 import { Product } from "../../../shared/entities/Product";
 import toast from "react-hot-toast";
 import { TableMain, TableCart } from "../ObjTable/Obj-table_cart_main";
-import { EmptyCart, EmptyMain } from "../Error/index";
+import { EmptyAuth, EmptyCart, EmptyMain } from "../Error/index";
 import { useStore } from "@nanostores/react";
 import { repo } from "remult";
 import { $filter, $selectedCategoryId } from "../../../store/store-data";
@@ -14,38 +14,52 @@ import { CartItem } from "../../../shared/entities/CartItem";
 
 
 const fetchProduct = async () => {
-  return await repo(Product).find({});
+  return await repo(Product).find({
+    include: {
+      // category: true,
+      sizeProduct: {
+        include: {
+          sizeName: true
+        }
+      }
+    }
+  });
 };
-
 
 export function JsphMain() {
   const
-    searchFilter: string = useStore($filter),
-    selectedCategoryId: number | null = useStore($selectedCategoryId) ;
-
+    searchFilter: string = useStore($filter);
 
   const
-    { data: session } = useSession();
+    selectedCategoryId: number | null = useStore($selectedCategoryId);
+
+  const
+    { data: session, status } = useSession();
 
   const
     { data, error, isLoading, isValidating } = useSWR<Product[]>('products', fetchProduct, { revalidateOnFocus: false });
-  const
+   // 
+    if(!isLoading){
+      console.log("data=", data)
+    }
+ 
+    const
     { data: cartData, mutate: mutateCart } = useSWR<CartItem[]>("cartItem", fetchCart, { revalidateOnFocus: true });
 
   const isInCart = (productId: number) => {
     return cartData?.some(item => item.productId === productId)
   }
   const
-    filteredData = data 
-    ? data.filter(row => {
-      if(selectedCategoryId && row.CategoryId !== selectedCategoryId) return false
-      if (!searchFilter.length) return true;
-      for (const key in row) {
-        const keyRow = row[key as keyof Product];
-        if (String(keyRow).toLowerCase().includes(searchFilter.toLowerCase())) return true;
-      }
-      return false;
-    }) : [];
+    filteredData = data
+      ? data.filter(row => {
+        if (selectedCategoryId && row.CategoryId !== selectedCategoryId) return false
+        if (!searchFilter.length) return true;
+        for (const key in row) {
+          const keyRow = row[key as keyof Product];
+          if (String(keyRow).toLowerCase().includes(searchFilter.toLowerCase())) return true;
+        }
+        return false;
+      }) : [];
 
   const
     addToCart = async (obj: any) => {
@@ -71,18 +85,30 @@ export function JsphMain() {
       }
     }
 
-  return <>
-    <div
-      className={classes.loading}>
-      {(isLoading || isValidating) && <Loader />}
-      {error && `❌ ${error.toString()}`}
-    </div>
-    {searchFilter.length > 0 && filteredData.length === 0 ?
-      <EmptyMain search={searchFilter} />
-      :
-      <TableMain isInCart={isInCart} addToCart={addToCart} data={filteredData} />
-    }
-  </>
+  // return <>
+  //   <div
+  //     className={classes.loading}>
+  //     {(isLoading || isValidating) && <Loader />}
+  //     {error && `❌ ${error.toString()}`}
+  //   </div>
+  //   {searchFilter.length > 0 && filteredData.length === 0 ?
+  //     <EmptyMain search={searchFilter} />
+  //     :
+  //     <TableMain isInCart={isInCart} addToCart={addToCart} data={filteredData} />
+  //   }
+  // </>
+  if (error) {
+    return <>Ошибка {JSON.stringify(error)}</>
+  }
+
+  if (isLoading) {
+    return <Loader />
+  }
+
+  if (searchFilter.length > 0 && filteredData.length === 0) {
+    return <EmptyMain search={searchFilter} />
+  }
+  return <TableMain isInCart={isInCart} addToCart={addToCart} data={filteredData} />
 };
 
 //Корзина 
@@ -98,15 +124,7 @@ const fetchCart = async () => {
 
 
 export function JsphCart() {
-  const { data: session, status } = useSession();
 
-  if (status === "loading") {
-    return <Loader />
-  }
-  if (!session) {
-    toast.error('Авторизуйтесь чтобы увидеть  корзину ')
-    return <EmptyCart />
-  }
   const
     { data, error, isLoading, isValidating, mutate } = useSWR<CartItem[]>('cartItem', fetchCart, { revalidateOnFocus: true });
   let
@@ -129,15 +147,31 @@ export function JsphCart() {
   }
 
 
-  return <>
-    <div
-      className={classes.loading}>
-      {(isLoading || isValidating) && <Loader />}
-      {error && `❌ ${error.toString()}`}
-    </div>
-    {data && data.length > 0 && !isLoading
-      ? <TableCart data={data} delPost={delPost} />
-      : <EmptyCart />
+  // return <>
+  //   <div
+  //     className={classes.loading}>
+  //     {(isLoading || isValidating) && <Loader />}
+  //     {error && `❌ ${error.toString()} ${JSON.stringify(error)}`}
+  //   </div>
+  //   {data && data.length > 0 && !isLoading
+  //     ? <TableCart data={data} delPost={delPost} />
+  //     : <EmptyCart />
+  //   }
+  // </>
+  console.log({ data, error })
+
+  if (error) {
+    if (error.status === 403) {
+      return <EmptyAuth />
     }
-  </>
+    return <>Ошибка {JSON.stringify(error)}</>
+  }
+  if (isLoading) {
+    return <Loader />
+  }
+  if (0 === data?.length) {
+    return <EmptyCart />
+  }
+  return <TableCart data={data} delPost={delPost} />
+
 }

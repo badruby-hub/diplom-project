@@ -1,5 +1,4 @@
 import { Entity, Fields, Relations } from "remult";
-import { ProductParams } from "./ProductParams";
 import { Category } from "./Category";
 import { SizeProduct } from "./SizeProduct";
 @Entity("product", {
@@ -8,28 +7,42 @@ import { SizeProduct } from "./SizeProduct";
 export class Product {
     @Fields.autoIncrement()
     id = 0;
+
     @Fields.string()
     title!: string;
+
     @Fields.integer()
     price!: number;
+
     @Fields.string()
     description?: string;
+
     @Fields.boolean()
     badge?: false;
+
     @Fields.string()
     images!: string;
+
     @Fields.integer()
     CategoryId?: number;
 
+    @Fields.string()
+    article!: string;
 
-    @Relations.toMany(() => ProductParams)
-    ProductParams?: ProductParams[]
+    @Fields.string()
+    gender?: string;
 
-    
-    @Relations.toMany(() => SizeProduct)
-    SizeProduct?: SizeProduct[]
+    @Fields.string()
+    color!: string;
+
+    @Fields.string()
+    composition!: string;
+
+
+    @Relations.toMany(() => SizeProduct, "productId")
+    sizeProduct?: SizeProduct[]
 
     @Relations.toOne(() => Category, { field: "CategoryId" })
-    Category?: Category;
+    category?: Category;
 
 }

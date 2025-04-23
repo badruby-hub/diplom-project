@@ -4,10 +4,12 @@ import { Entity, Fields, Relations, remult } from "remult";
 import { Product } from "./Product";
 
 @Entity("cartitem", {
-    allowApiCrud: true,
+    
+    // allowApiCrud: true,
+    allowApiCrud: remult.authenticated,
     apiPrefilter: () => {
 
-        // if (remult.isAllowed(Roles.admin)) return {}; 
+        if (remult.isAllowed(Roles.admin)) return {}; 
         return {
             userId: remult.user!.id,
         };
