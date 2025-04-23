@@ -23,6 +23,6 @@ export class SizeProduct {
     @Relations.toOne(()=>Product, { field: "ProductId" })
     product?: Product;
 
-    @Relations.toOne(()=>SizeName, { field: "SizeNameId" })
+    @Relations.toOne(()=>SizeName, { field: "sizeId" })
     sizeName?: SizeName;
 }

@@ -16,7 +16,7 @@ import { CartItem } from "../../../shared/entities/CartItem";
 const fetchProduct = async () => {
   return await repo(Product).find({
     include: {
-      // category: true,
+      category: true,
       sizeProduct: {
         include: {
           sizeName: true
