@@ -207,7 +207,10 @@ export function TableProfile() {
         <section className={classesProfile.container__profile}>
            <section className={classesProfile.block__name}>
                <img src="аватар.png" alt="Аватар" className={classesProfile.avatar__img}/>
-               <p>{remult.user?.name}</p>          
+               <p>{remult.user?.name}</p>   
+               <a className="button" href="/api/auth/signout">
+                 Выйти
+               </a>       
            </section>
            <section className={classesProfile.block__sale}>
             <div>скидка</div>

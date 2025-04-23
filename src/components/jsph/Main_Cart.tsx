@@ -16,7 +16,7 @@ import { CartItem } from "../../../shared/entities/CartItem";
 const fetchProduct = async () => {
   return await repo(Product).find({
     include: {
-      // category: true,
+      category: true,
       sizeProduct: {
         include: {
           sizeName: true
@@ -38,7 +38,7 @@ export function JsphMain() {
 
   const
     { data, error, isLoading, isValidating } = useSWR<Product[]>('products', fetchProduct, { revalidateOnFocus: false });
-   // 
+   
     if(!isLoading){
       console.log("data=", data)
     }
