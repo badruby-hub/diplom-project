@@ -54,3 +54,9 @@ export function OrderBuy() {
     <button className={classes.order__button}>Заказать</button>
   </>
 }
+
+export function BtnAdmin() {
+  return <button className={classes.btn__admin}>
+    <Link className={classes.link__admin} href={"/api/admin"} target="_blank" >Административная панель</Link>
+  </button>
+}

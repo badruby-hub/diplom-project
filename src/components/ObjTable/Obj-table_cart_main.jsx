@@ -5,52 +5,23 @@ import { AddForm, DelPost, OrderBuy } from "../Buttons/Buttons";
 import Link from "next/link";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { FaTimes } from "react-icons/fa";
-import { repo } from "remult";
-import useSWR from "swr";
 import { useState, useEffect } from "react";
 import { remult } from "remult";
 import { Loader } from "../Spinner";
 
-// import { ErrorInfo } from "../Error";
-// import { SizeProduct } from "../../../shared/entities/SizeProduct";
-
-
-
-// const fetchSize = async () => {
-//     try {
-//         return await repo(SizeProduct).find({
-//             include: {
-//                Product:{
-//                    include:{
-//                     SizeName:true
-//                    }
-//                }
-//             }
-            
-//         })
-//     } catch (error) {
-//         throw error;
-//     }
-// };
-
 
 export function TableMain({ data, addToCart, isInCart }) {
-    // const
-        // { data : sizeProduct, error } = useSWR("sizeProduct", fetchSize);
-    //   if(error)return <>{JSON.stringify(error)}</>
-    //   if(!sizeProduct) return <>Loading...</>
-    //   console.log("Size",sizeProduct?.sizeName);
-    const [isOpen, setIsOpen] = useState(null);
+    const [isOpenFastView, setIsOpenFastView] = useState(null);
+    const [isOpenListSize, setIsOpenListSize] = useState(false);
     const [visible, setVisible] = useState(null);
-    const [paramId, setParamId] = useState(null);
+    const [selected, setSelected] = useState(null)
     const openDialog = async (id) => {
-        // const productParams = dada.find(param => param.id === id);
-        setIsOpen(id);
-
+        setIsOpenFastView(id);
     };
 
+ 
     const closeDialog = () => {
-        setIsOpen(null);
+        setIsOpenFastView(null);
     };
     return <main className={classes.cards}>
         <section className={`${classes.container} ${classes.container__cards}`}>
@@ -59,7 +30,7 @@ export function TableMain({ data, addToCart, isInCart }) {
                     discount = Math.round(obj.price * 0.10),
                     newPrice = Math.round(obj.price - discount),
                     discountPercentage = Math.floor(((obj.price - newPrice) / obj.price) * 100);
-                return <article onMouseEnter={() => setVisible(obj.id)} onMouseLeave={() => setVisible(null)} className={classes.card} key={obj.id + Math.random()}>
+                return <article onMouseEnter={() => setVisible(obj.id)} onMouseLeave={() => setVisible(null)} className={classes.card} key={obj.article + Math.random()}>
                     <section className={classes.card__top}>
                         <Link href="#!" className={classes.card__img}>
                             <img src={obj.images} alt={obj.title} />
@@ -75,7 +46,7 @@ export function TableMain({ data, addToCart, isInCart }) {
                     </section>
                     <AddForm selectCart={isInCart?.(obj.id)} addToCart={() => addToCart(obj)} />
                     <button className={classes.btn__modal__open} onClick={() => openDialog(obj.id)}> Быстрый просмотр </button>
-                    <Dialog open={isOpen === obj.id} onClose={closeDialog}>
+                    <Dialog open={isOpenFastView === obj.id} onClose={closeDialog}>
                         <div className={classes.modal__bg}>
                             <DialogPanel className={classes.popup}>
                                 <FaTimes className={classes.modal__btn__close} onClick={closeDialog} />
@@ -92,9 +63,22 @@ export function TableMain({ data, addToCart, isInCart }) {
                                         </div>
                                         <p className={classes.modal__product__gender}>Пол:<span className={classes.gender}> {obj?.gender}</span></p>
                                         <p className={classes.modal__product__color}>Цвет: <span className={classes.color}>{obj?.color}</span></p>
-                                        <ul>
-                                            <li><button>{obj?.SizeProduct?.SizeName}</button></li>
-                                        </ul>
+                                        <section className={classes.container__sizes}>
+                                            <button className={classes.btn__modal__table__size} onClick={() => setIsOpenListSize(true)}>Таблица Размеров</button>
+
+                                            <ol className={classes.sizes__list}>
+                                                {obj?.sizeProduct.map(siz => {
+                                                    return <>
+                                                        <li 
+                                                        onClick={() => setSelected(siz.sizeName.size)}
+                                                        className={`${classes.block__size} ${selected === siz.sizeName.size ? classes.selected : ''}`} 
+                                                        key={siz?.sizeName.size + Math.random()}> {siz?.sizeName.size} <span className={classes.size__name} >{siz?.sizeName.size}</span></li>
+                                                    </>
+                                                }
+                                                )}
+                                            </ol>
+                                        </section>
+                                        <AddForm className={classes.btn__fast__view} addToCart={() => addToCart(obj)} />
                                     </div>
                                 </section>
                             </DialogPanel>
@@ -121,7 +105,7 @@ export function TableCart({ data, delPost }) {
         <main className={classesCart.product__main}>
             <section className={classesCart.product}>
                 <h2>Корзина</h2>
-                {data.map(obj => <article className={classesCart.product__article} key={obj.product?.title}>
+                {data.map(obj => <article className={classesCart.product__article} key={obj.product?.title + Math.random()}>
                     <figure className={classesCart.figure}>
                         <img className={classesCart.product__image} src={obj.product?.images} alt={obj.product?.title} />
                         <figcaption className={classesCart.product__caption}>
@@ -171,82 +155,82 @@ export function TableCart({ data, delPost }) {
 
 export function TableProfile() {
     const [status, setStatus] = useState("Loading");
-      const [error, setError] = useState();
-      useEffect(() => {
+    const [error, setError] = useState();
+    useEffect(() => {
         remult
-          .initUser()
-          .then(() => setStatus("Success"))
-          .catch((e) => {
-            setStatus("Error");
-            if (e.message.includes("the server configuration")) {
-              setError(
-                <>
-                  Make sure to set the <code>AUTH_SECRET</code> in the{" "}
-                  <code>.env</code> file. <br />
-                  Read more at{" "}
-                  <a href="https://errors.authjs.dev#missingsecret">auth.js docs</a>
-                  .
-                  <br />
-                  Please check the server terminal console for more information.
-                </>,
-              );
-            }
-          });
-      }, []);
+            .initUser()
+            .then(() => setStatus("Success"))
+            .catch((e) => {
+                setStatus("Error");
+                if (e.message.includes("the server configuration")) {
+                    setError(
+                        <>
+                            Make sure to set the <code>AUTH_SECRET</code> in the{" "}
+                            <code>.env</code> file. <br />
+                            Read more at{" "}
+                            <a href="https://errors.authjs.dev#missingsecret">auth.js docs</a>
+                            .
+                            <br />
+                            Please check the server terminal console for more information.
+                        </>,
+                    );
+                }
+            });
+    }, []);
 
-      if (status === "Loading") {
-        return <Loader/>
+    if (status === "Loading") {
+        return <Loader />
 
 
-      } else if (status === "Error") {
+    } else if (status === "Error") {
         return <p>{error}</p>
 
 
-      } else if (remult.authenticated()) {
+    } else if (remult.authenticated()) {
         return <main>
-        <section className={classesProfile.container__profile}>
-           <section className={classesProfile.block__name}>
-               <img src="аватар.png" alt="Аватар" className={classesProfile.avatar__img}/>
-               <p>{remult.user?.name}</p>   
-               <a className="button" href="/api/auth/signout">
-                 Выйти
-               </a>       
-           </section>
-           <section className={classesProfile.block__sale}>
-            <div>скидка</div>
-            <div>Общая сумма покупок</div>
+            <section className={classesProfile.container__profile}>
+                <section className={classesProfile.block__name}>
+                    <img src="аватар.png" alt="Аватар" className={classesProfile.avatar__img} />
+                    <p>{remult.user?.name}</p>
+                    <Link className="button" href="/api/auth/signout">
+                        Выйти
+                    </Link>
+                </section>
+                <section className={classesProfile.block__sale}>
+                    <div>скидка</div>
+                    <div>Общая сумма покупок</div>
+                </section>
+                <section className={classesProfile.block__payment} >
+                    <h3>Финансы</h3>
+                    <button>Способ оплаты</button>
+                    <button>Реквизиты</button>
+                </section>
+                <section>
+                    <h3>Управление</h3>
+                    <button className={classesProfile.block__settings}>Настройки</button>
+                    <button className={classesProfile.block__settings}>Ваши устройства</button>
+                </section>
             </section>
-           <section  className={classesProfile.block__payment} >
-              <h3>Финансы</h3>
-             <button>Способ оплаты</button>
-             <button>Реквизиты</button>
-           </section>
-           <section>
-            <h3>Управление</h3>
-            <button  className={classesProfile.block__settings}>Настройки</button>
-            <button  className={classesProfile.block__settings}>Ваши устройства</button>
-           </section>
-        </section>
-        <section className={classesProfile.container__content} >
-                 <section className={classesProfile.block__wallet}>
-                 <h3>Кошелек</h3>
-                 <button>пополнить</button>
-                 </section>
-                 <section className={classesProfile.block__favorite}>
+            <section className={classesProfile.container__content} >
+                <section className={classesProfile.block__wallet}>
+                    <h3>Кошелек</h3>
+                    <button>пополнить</button>
+                </section>
+                <section className={classesProfile.block__favorite}>
                     <h3>Избранное</h3>
                     <p>Товаров</p>
-                 </section>
-                 <section className={classesProfile.block__purchases}>
-                      <h3>Покупки</h3>
-                      <p>смотреть</p>
-                 </section>
-                 <section className={classesProfile.block__service}>
-                          <h3>Сервис и помощь</h3>
-                          <button>Написать в поддержку</button>
-                          <button>Вернуть товар</button>
-                          <button>Вопросы и ответы</button>
-                 </section>
-        </section>
+                </section>
+                <section className={classesProfile.block__purchases}>
+                    <h3>Покупки</h3>
+                    <p>смотреть</p>
+                </section>
+                <section className={classesProfile.block__service}>
+                    <h3>Сервис и помощь</h3>
+                    <button>Написать в поддержку</button>
+                    <button>Вернуть товар</button>
+                    <button>Вопросы и ответы</button>
+                </section>
+            </section>
         </main>
-      } 
+    }
 }

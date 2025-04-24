@@ -40,7 +40,7 @@ export function JsphMain() {
     { data, error, isLoading, isValidating } = useSWR<Product[]>('products', fetchProduct, { revalidateOnFocus: false });
    
     if(!isLoading){
-      console.log("data=", data)
+      console.log("data=", data);
     }
  
     const

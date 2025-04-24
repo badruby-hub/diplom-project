@@ -131,8 +131,33 @@
     line-height: 1.2;
     color: #414141;
 }
+/*МОДАЛЬНОЕ ОКНО ПРОСМОТРА ТАБЛИЦЫ РАЗМЕРОВ*/
 
-/*МОДАЛЬНОЕ ОКНО*/
+.popup__table__size{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: relative;
+    background: gray;
+    width: 500px;
+    height: 270px;
+    border-radius: 20px;
+}
+.modal__bg__table__size{
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 999;
+}
+
+/*МОДАЛЬНОЕ ОКНО БЫСТРОГО ПРОСМОТРА*/
 
 .modal__bg {
     display: none;
@@ -145,7 +170,7 @@
     bottom: 0;
 
     background: rgba(0, 0, 0, 0.3);
-    z-index: 999;
+    z-index: 500;
 }
 
 .popup {
@@ -184,15 +209,17 @@
     padding: 1em;
     border-radius: 0 20px 20px 0;
 }
-
-.modal__block__content > h2{
- margin-bottom: 0;
+.modal__block__content > h2,.modal__block__content > p{
+    margin: 10px;
+    
 }
+
 
 .modal__block__price {
     display: flex;
     align-items: flex-end;
     gap: 10px;
+    margin: 10px;
 }
 
 .modal__btn__close {
@@ -264,15 +291,86 @@
 .article:hover{
     color: red;
 }
+
+/* ТАБЛИЦА РАЗМЕРОВ */
+.container__sizes{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 15px 10px 5px 10px ;
+}
+
+.btn__modal__table__size{
+    padding: 0;
+    font-size: 15px;
+    font-weight: 400;
+    background: none;
+    color: #000000;
+    text-decoration: underline;
+    border: none;
+    cursor: pointer;
+}
+
+.sizes__list{
+    display: flex;
+    gap: 10px;
+    padding: 0;
+    list-style-type: none ;
+    
+}
+.block__size{
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   font-size: 20px;
+   border: 1px solid #606060;
+   border-radius: 10px;
+   padding: 3px;
+   width: 45px;
+   color: #000000;
+   cursor: pointer;
+}
+
+.block__size:hover{
+    border: 1px solid #42abd8;
+}
+
+.selected {
+    border:1px solid #42abd8;
+}
+
+.btn__modal__table__size:hover{
+    color: #42abd8;
+}
+
+
+.size__name{
+    font-size: 15px;
+    color: #606060;
+}
+
+.btn__fast__view{
+    padding: 0;
+    margin: 0;
+}
+
+
+
+
+
+
+
+
+
 @media(min-width:1100px) {
     .card:hover .btn__modal__open {
         display: block;
     }
-
     .modal__bg {
         display: flex;
     }
 }
+
 
 
 @media(max-width:530px) {

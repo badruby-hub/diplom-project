@@ -53,6 +53,10 @@
     list-style-type: none;
 }
 
+.container__link{
+    display: flex;
+    flex-direction: column;
+}
 
 .link {
     text-decoration: none;
@@ -91,11 +95,6 @@
 }
 
 
-@media(max-width:990px) {
-    .link__ul {
-        display: none;
-    }
-}
 
 
 
@@ -208,9 +207,14 @@
 }
 
 
+
 @media(max-width:990px) {
     .burger__link {
         display: block;
+    }
+
+    .link__ul, .container__link {
+        display: none;
     }
 
     .burger__li__link {

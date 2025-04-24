@@ -4,13 +4,14 @@ import { FaShoppingCart, FaUserAlt, FaMapMarkerAlt, FaNeos } from "react-icons/f
 import { SearchForm } from "../SearchForm/Search";
 import classes from "./Link.module.css"
 import { $filter, $isOpen, $search, $selectedCategoryId } from "../../../store/store-data";
-import { BurgerBtn } from "../Buttons/Buttons";
+import { BtnAdmin, BurgerBtn } from "../Buttons/Buttons";
 import { useStore } from "@nanostores/react";
 import { useEffect, useState } from "react";
 import { Product } from "../../../shared/entities/Product";
 import { remult, repo } from "remult";
 import { Category } from "../../../shared/entities/Category";
 import Tile, { type TileStatus } from "../../demo/Tile";
+import Admin from "@/demo/Admin";
 
 
 
@@ -21,6 +22,7 @@ export default function Header() {
     const [data, setData] = useState<Product[]>([]);
     const [status, setStatus] = useState<TileStatus>("Loading");
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    
     useEffect(() => {
         repo(Product).find({}).then(setData);
     }, []);
@@ -63,9 +65,12 @@ export default function Header() {
         ];
     console.log("PagesWebsite", data);
     return <nav className={classes.navigation}>
+       
         <div className={classes.block__logo}>{<Link className={classes.logo__link} href={'/'} onClick={() => { logoClickSearchClear(), isClose(); }}>{<FaNeos className={classes.icon__logo} />}</Link>}</div>
-        {<BurgerBtn />}
-        {<SearchForm />}
+        <BurgerBtn />
+        <SearchForm />
+        <section className={classes.container__link}>
+        <Admin/>
         <ul className={classes.link__ul}>
             {pages.map(({ href, title }) =>
                 <li className={classes.link__li} key={href} onClick={isClose}>
@@ -74,6 +79,7 @@ export default function Header() {
                     </Link>
                 </li>)}
         </ul>
+        </section>
     </nav>
 }
 

@@ -9,6 +9,7 @@ import { Cart } from "../../shared/entities/Cart";
 import { Category } from "../../shared/entities/Category";
 import { CartItem } from "../../shared/entities/CartItem";
 import { SizeProduct } from "../../shared/entities/SizeProduct";
+import { Roles } from "@/demo/auth/Roles";
   
 export const api = remultNextApp({
   getUser: getUserFromRequest,
@@ -18,6 +19,6 @@ export const api = remultNextApp({
   dataProvider: createPostgresDataProvider({
     connectionString: process.env["DATABASE_URL"]    
   }),
-  admin: true,
+  admin: Roles.admin,
   entities: [User, Product,SizeName,Cart,Category, CartItem, SizeProduct],
 });
