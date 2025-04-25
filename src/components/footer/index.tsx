@@ -55,10 +55,10 @@ export  function Footer() {
             </div>
             <ul className={classes.block__social}>
                 <li className={`${classes.li} ${classes.li__social}`}>
-                    <Link className={`${classes.link} ${classes.telegram}`}  href={"!#"}><FaTelegramPlane/></Link>
+                    <Link className={`${classes.link} ${classes.telegram}`}  href={"https://t.me/Fataliev_n"} target="_blank"><FaTelegramPlane/></Link>
                 </li>
                 <li className={`${classes.li} ${classes.li__social}`}>
-                    <Link className={`${classes.link} ${classes.whatsApp}`}  href={"!#"}><FaWhatsapp/></Link>
+                    <Link className={`${classes.link} ${classes.whatsApp}`}  href={"https://wa.me/79962042066"} target="_blank"><FaWhatsapp/></Link>
                 </li>
             </ul>
         </section>
