@@ -2,6 +2,7 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    flex-grow: 1;
     max-width: 1450px;
     margin: 0 2.5rem;
     padding-block: 20px;
@@ -53,12 +54,32 @@
     height: 100%;
 }
 
-@media (max-width:  400px) {
+.company, .partner,.buyers,.social__icon{
+    font-size: 15px;
+}
+
+@media (max-width:400px) {
     .footer__navigation > section {
         flex: 1;
     }
 }
 
-@media (min-width:1350px) {
-    .footer__navigation {}
+
+@media( 412px <= width < 587px){
+    .footer__navigation>section>ul, .footer__navigation>section>h3 {
+        font-size: 15px;
+    }
 }
+
+@media (min-width:587px) {
+    .company, .partner,.buyers,.social__icon{
+        font-size: 20px;
+    }
+}
+
+@media (min-width:757px) {
+    .company, .partner,.buyers,.social__icon{
+        font-size: 15px;
+    }
+}
+

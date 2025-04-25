@@ -20,17 +20,15 @@ body {
   position: relative;
 }
 
-header{
+.footer, header{
+  display: flex;
+  justify-content: center;
   background-color: rgba(208, 207, 207, 1);
   z-index: 99;
   position: relative;
 }
 
-.footer{
-  background-color: rgba(208, 207, 207, 1);
-  z-index: 99;
-  position: relative;
-}
+
 
 .no-scroll {
   overflow: hidden;
