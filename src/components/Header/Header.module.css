@@ -156,6 +156,7 @@
     height: 100%;
     opacity: .3;
     background-color: black;
+    z-index: 998;
 }
 
 .burger__ul__visibility {
