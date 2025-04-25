@@ -92,6 +92,8 @@
 .product__caption__info {
     display: flex;
     justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
     margin: 0 1.5em;
     max-width: 90%;
 }
@@ -101,3 +103,8 @@
     width: 10rem;
 }
 
+@media(max-width:1128px){
+    .cart__order__form{
+        flex-grow: 1;
+    }
+}

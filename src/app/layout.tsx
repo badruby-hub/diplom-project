@@ -6,6 +6,8 @@ import { Toaster } from "react-hot-toast";
 import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
 import Header,{ BurgerMenu }  from "@/components/Header";
+import { Footer } from "@/components/footer";
+
 
 
 const geistSans = localFont({
@@ -32,17 +34,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <div className="wrapper">
       <Toaster/>
-        <header>
+        <header className='header'>
         <Header/>
         </header>
+        <main className="main">
         <SessionProvider session={session}>
         <BurgerMenu/>
         {children}
         </SessionProvider>
-        <footer>
-          
+        </main>
+        <footer className="footer">
+        <Footer/>
         </footer>
+        </div>
       </body>
     </html>
   );

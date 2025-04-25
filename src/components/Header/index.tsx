@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { FaShoppingCart, FaUserAlt, FaMapMarkerAlt, FaNeos } from "react-icons/fa";
 import { SearchForm } from "../SearchForm/Search";
-import classes from "./Link.module.css"
+import classes from "./Header.module.css"
 import { $filter, $isOpen, $search, $selectedCategoryId } from "../../../store/store-data";
 import { BtnAdmin, BurgerBtn } from "../Buttons/Buttons";
 import { useStore } from "@nanostores/react";

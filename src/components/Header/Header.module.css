@@ -30,7 +30,8 @@
 .navigation {
     display: flex;
     align-items: center;
-    margin-inline: 5rem;
+    margin:0 2.5rem;
+    max-width: 1450px;
 }
 
 .block__icon {
@@ -132,9 +133,9 @@
     position: absolute;
     width: 300px;
     min-height: 90vh;
-    left: 0px;
-    top: 92px;
-    background-color: #c9c8c8;
+    left: 0;
+    top: 0;
+    background-color: rgba(208, 207, 207, 1);
     animation: slide-in .5s ease forwards;
     z-index: 999;
 

@@ -23,8 +23,7 @@ export function TableMain({ data, addToCart, isInCart }) {
     const closeDialog = () => {
         setIsOpenFastView(null);
     };
-    return <main className={classes.cards}>
-        <section className={`${classes.container} ${classes.container__cards}`}>
+    return <section className={`${classes.container} ${classes.container__cards}`}>
             {data.map(obj => {
                 const
                     discount = Math.round(obj.price * 0.10),
@@ -88,7 +87,6 @@ export function TableMain({ data, addToCart, isInCart }) {
             }
             )}
         </section>
-    </main >
 }
 
 
@@ -120,17 +118,17 @@ export function TableCart({ data, delPost }) {
                 )}
             </section>
             <aside className={classesCart.cart__delivery} >
-                <h2> Доставка в пункт назначения </h2>
-                <p>{<Link className={classesCart.link__url} href={'/authorization'}>Войти или зарегестрироваться,</Link>} чтобы выбрать доставку </p>
+                <h2>Доставка в пункт выдачи</h2>
+                <p>Саратовская область, Энгельс, Одесская улица, 75,  (Пункт выдачи), Ежедневно 10:00 – 21:00 </p>
             </aside>
             <section>
                 <aside className={classesCart.cart__pay}>
                     <h2>Способ оплаты</h2>
-                    <p>{<Link className={classesCart.link__url} href={'/authorization'}>Войти или зарегестрироваться,</Link>} чтобы выбрать способ оплаты </p>
+                    <p>Кошелёк: 0 ₽</p>
                 </aside>
                 <aside className={classesCart.cart__my__details}>
                     <h2>Мои данные</h2>
-                    <p>{<Link className={classesCart.link__url} href={'/authorization'}>Войти или зарегестрироваться,</Link>} чтобы оформить заказ</p>
+                    <p>{remult?.user?.name}</p>
                 </aside>
             </section>
         </main>

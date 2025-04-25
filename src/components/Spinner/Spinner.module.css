@@ -1,10 +1,11 @@
 
 #load {
     position:absolute;
-    width:600px;
-    height:36px;
-    left:50%;
+    width:100%;
+    min-height:100%;
+    left:0;
     top:40%;
+    font-size: 40px;
     margin-left:-300px;
     overflow:visible;
     -webkit-user-select:none;
