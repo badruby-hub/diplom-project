@@ -25,17 +25,15 @@ export function SearchForm() {
                 if (!search.length) return true;
                 for (const key in row) {
                     const keyRow = row[key as keyof Product]
-                    console.log({ key, row }, keyRow)
                     if (String(keyRow).toLowerCase()?.includes?.(search.toLowerCase())) return true;
                 }
-                console.log(search)
                 return false;
             });
         }, [data, sort, search]),
 
         itemClick = (event: React.MouseEvent<HTMLElement>) => {
             const textInValue: string | null = event.currentTarget.textContent;
-            // setSearch(textInValue);
+
             $search.set(textInValue || '');
             $filter.set(textInValue || '');
             setIsOpen(!isOpen);
@@ -46,7 +44,6 @@ export function SearchForm() {
                 if (selectedIndex >= 0 && selectedIndex < sortAndFilterData.length) {
                     const selectedItem = sortAndFilterData[selectedIndex];
                     if (selectedItem) {
-                        // setSearch(selectedItem.title);
                         $filter.set(selectedItem.title);
                         $search.set(selectedItem.title);
                     }
@@ -86,7 +83,6 @@ export function SearchForm() {
             setIsOpen(true);
             setSelectedIndex(-1);
         };
-    console.log('SearchForm', data);
     return <>
         <form className={classes.search__form}>
             <input
@@ -105,10 +101,8 @@ export function SearchForm() {
                                 if (!search.length) return true;
                                 for (const key in row) {
                                     const keyRow = row[key as keyof Product]
-                                    console.log({ key, row }, keyRow)
                                     if (String(keyRow).toLowerCase()?.includes?.(search.toLowerCase())) return true;
                                 }
-                                console.log(search)
                                 return false;
                             })
                             .map((row, index) => {

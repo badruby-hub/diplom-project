@@ -154,7 +154,7 @@ export function TableCart({ data, delPost }) {
 export function TableProfile() {
     const [status, setStatus] = useState("Loading");
     const [error, setError] = useState();
-    const [isOpenModaLk, setIsOpenModalLk] = useState(false);
+    const [isOpenModalLk, setIsOpenModalLk] = useState(false);
 
     useEffect(() => {
         remult
@@ -192,7 +192,7 @@ export function TableProfile() {
                 <section className={classesProfile.block__name}>
                     <div className={classesProfile.avatar}><p className={classesProfile.avatar__name__latter} >{remult.user?.name?.charAt(0)}</p></div>
                     <p className={classesProfile.avatar__name} onClick={() => setIsOpenModalLk(true)}>{remult.user?.name}</p>
-                    <Dialog className={classesProfile.modal__dialog} open={isOpenModaLk} onClose={() => setIsOpenModalLk(false)}>
+                    <Dialog className={classesProfile.modal__dialog} open={isOpenModalLk} onClose={() => setIsOpenModalLk(false)}>
                         <div className={classesProfile.modal__cloud}>
                             <DialogPanel className={classesProfile.modal__lk__popup}>
                                 <div className={classesProfile.block__modal__form}>
@@ -251,7 +251,7 @@ export function TableProfile() {
                             <h3 className={classesProfile.zagolovok__content}>0 ₽</h3>
                             <div>Кошелек</div>
                         </section>
-                        <button>пополнить</button>
+                        <button className={classesProfile.up__balance} >пополнить</button>
                     </section>
                     <section className={classesProfile.block__installment}>
                         <h3 className={classesProfile.zagolovok__content}>40 000 ₽</h3>

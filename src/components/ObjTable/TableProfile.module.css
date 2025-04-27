@@ -239,6 +239,18 @@
     gap: 10px;
 }
 
+.up__balance{
+    font-size: 15px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background: none;
+    transition:  background-color .2s ease-in-out ; 
+    cursor: pointer;
+}
+
+.up__balance:hover{
+   background-color: #42abd8;
+}
 
 .block__btn__service {
     display: flex;

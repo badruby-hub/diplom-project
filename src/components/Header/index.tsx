@@ -63,7 +63,6 @@ export default function Header() {
             { href: isAuthenticated ? '/authorization' : '/api/auth/signin', title: <div className={classes.block__icon}><FaUserAlt className={classes.icon} /> {isAuthenticated ? 'Данные' : 'Войти'}</div> },
             { href: '/cart', title: <div className={classes.block__icon}><FaShoppingCart className={classes.icon} /> Корзина</div> },
         ];
-    console.log("PagesWebsite", data);
     return <nav className={classes.navigation}>
        
         <div className={classes.block__logo}>{<Link className={classes.logo__link} href={'/'} onClick={() => { logoClickSearchClear(), isClose(); }}>{<FaNeos className={classes.icon__logo} />}</Link>}</div>
@@ -120,8 +119,6 @@ export function BurgerMenu() {
     useEffect(() => {
         repo(Category).find({}).then(setData)
     }, []);
-
-    console.log("burger menu data", data);
     return <>
         <nav className={isOpen ? classes.burger__navigation : classes.burger__animation__close}>
             <ul className={isOpen ? classes.burger__ul__visibility : classes.burger__ul__hidden}>

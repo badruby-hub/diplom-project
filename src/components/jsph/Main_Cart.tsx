@@ -1,5 +1,4 @@
 "use client"
-import classes from "./Jsph.module.css";
 import useSWR from "swr";
 import { Product } from "../../../shared/entities/Product";
 import toast from "react-hot-toast";
@@ -11,7 +10,8 @@ import { $filter, $selectedCategoryId } from "../../../store/store-data";
 import { Loader } from "@/components/Spinner";
 import { useSession } from "next-auth/react";
 import { CartItem } from "../../../shared/entities/CartItem";
-
+import { useState } from "react";
+import { Pagination } from "../Pagination/Pagination"
 
 const fetchProduct = async () => {
   return await repo(Product).find({
@@ -34,33 +34,41 @@ export function JsphMain() {
     selectedCategoryId: number | null = useStore($selectedCategoryId);
 
   const
-    { data: session, status } = useSession();
+    { data: session } = useSession();
 
   const
-    { data, error, isLoading, isValidating } = useSWR<Product[]>('products', fetchProduct, { revalidateOnFocus: false });
-   
-    if(!isLoading){
-      console.log("data=", data);
-    }
- 
-    const
+    { data, error, isLoading } = useSWR<Product[]>('products', fetchProduct, { revalidateOnFocus: false });
+
+  const
     { data: cartData, mutate: mutateCart } = useSWR<CartItem[]>("cartItem", fetchCart, { revalidateOnFocus: true });
+
+
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [countPerPage] = useState(10);
+
+
+
+
+  const
+    filteredData = data ? data.filter(row => {
+      if (selectedCategoryId && row.CategoryId !== selectedCategoryId) return false
+      if (!searchFilter.length) return true;
+      for (const key in row) {
+        const keyRow = row[key as keyof Product];
+        if (String(keyRow).toLowerCase().includes(searchFilter.toLowerCase())) return true;
+      }
+      return false;
+    }) : [];
+  const lastIndex = currentPage * countPerPage;
+  const firsIndex = lastIndex - countPerPage;
+  const currentItem = filteredData?.slice(firsIndex, lastIndex);
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   const isInCart = (productId: number) => {
     return cartData?.some(item => item.productId === productId)
   }
-  const
-    filteredData = data
-      ? data.filter(row => {
-        if (selectedCategoryId && row.CategoryId !== selectedCategoryId) return false
-        if (!searchFilter.length) return true;
-        for (const key in row) {
-          const keyRow = row[key as keyof Product];
-          if (String(keyRow).toLowerCase().includes(searchFilter.toLowerCase())) return true;
-        }
-        return false;
-      }) : [];
-
   const
     addToCart = async (obj: any) => {
       if (!session?.user) {
@@ -85,18 +93,6 @@ export function JsphMain() {
       }
     }
 
-  // return <>
-  //   <div
-  //     className={classes.loading}>
-  //     {(isLoading || isValidating) && <Loader />}
-  //     {error && `❌ ${error.toString()}`}
-  //   </div>
-  //   {searchFilter.length > 0 && filteredData.length === 0 ?
-  //     <EmptyMain search={searchFilter} />
-  //     :
-  //     <TableMain isInCart={isInCart} addToCart={addToCart} data={filteredData} />
-  //   }
-  // </>
   if (error) {
     return <>Ошибка {JSON.stringify(error)}</>
   }
@@ -108,8 +104,20 @@ export function JsphMain() {
   if (searchFilter.length > 0 && filteredData.length === 0) {
     return <EmptyMain search={searchFilter} />
   }
-  return <TableMain isInCart={isInCart} addToCart={addToCart} data={filteredData} />
+  return <>
+
+    <TableMain isInCart={isInCart} addToCart={addToCart} data={currentItem} />
+    <Pagination
+      countPerPage={countPerPage}
+      totalItem={filteredData?.length}
+      paginate={paginate}
+    />
+  </>
 };
+
+
+
+
 
 //Корзина 
 
@@ -127,6 +135,7 @@ export function JsphCart() {
 
   const
     { data, error, isLoading, isValidating, mutate } = useSWR<CartItem[]>('cartItem', fetchCart, { revalidateOnFocus: true });
+
   let
     optimisticData;
   const delPost = async (productId: number) => {
@@ -145,20 +154,6 @@ export function JsphCart() {
       throw new Error();
     }
   }
-
-
-  // return <>
-  //   <div
-  //     className={classes.loading}>
-  //     {(isLoading || isValidating) && <Loader />}
-  //     {error && `❌ ${error.toString()} ${JSON.stringify(error)}`}
-  //   </div>
-  //   {data && data.length > 0 && !isLoading
-  //     ? <TableCart data={data} delPost={delPost} />
-  //     : <EmptyCart />
-  //   }
-  // </>
-  console.log({ data, error })
 
   if (error) {
     if (error.status === 403) {
