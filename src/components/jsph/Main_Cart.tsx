@@ -45,7 +45,7 @@ export function JsphMain() {
 
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [countPerPage] = useState(10);
+  const [countPerPage] = useState(12);
 
 
 
